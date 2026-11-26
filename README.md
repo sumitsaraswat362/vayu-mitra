@@ -25,11 +25,11 @@ Rather than presenting passive AQI numbers that fail to change human habits, Vay
 | Evaluation Criteria | Priority Tier | Technical Implementation in Vayu-Mitra | Verified Benchmark |
 | :--- | :--- | :--- | :--- |
 | Problem Statement Alignment | High Impact | Urban winter smog resilience, diurnal radiation inversion modeling, 5 vulnerable health personas | 100% Aligned with Challenge Vertical |
-| Code Quality | High Impact | Strict TypeScript without any types, modular separation of concern, zero circular dependencies | Production Clean, Zero Linter Warnings |
+| Code Quality | High Impact | Zero ESLint warnings, custom React hooks, App Router error and loading boundaries, strict TypeScript | 100% Production Clean, Zero Warnings |
 | Security | High Impact | Strict CSP headers, HSTS preloading, X-Frame-Options DENY, coordinate bounds checking, 32KB payload cap | Zero External DB Attack Surface |
 | Testing | High Impact | 17 Vitest automated tests covering AQI categorization, MoEFCC CPCB sub-indices, GRAP stages, and security bounds | 17 of 17 Automated Tests Passing |
 | Efficiency | Medium Impact | Next.js 14 App Router, static generation, 108 kB First Load JS, edge caching headers | Under 15ms Response Time |
-| Accessibility | Low/Medium Impact | Semantic HTML5 landmarks, skip-to-content bypass, aria-live polite announcements, 44px touch targets | Full WCAG 2.1 AA Compliance |
+| Accessibility | Low/Medium Impact | Semantic HTML5 landmarks, W3C ARIA 1.2 Combobox pattern, skip-to-content bypass, aria-live polite regions | Full WCAG 2.1 AA Compliance |
 
 ## Architectural Highlights
 
@@ -39,6 +39,8 @@ Rather than presenting passive AQI numbers that fail to change human habits, Vay
   3. Daily Commuter (Traffic corridor soot reduction, underground metro routing)
   4. Morning Athlete / Runner (Inversion cardio hazard mitigation, gym workout shifts)
   5. General Urban Resident (Balanced chores and window ventilation discipline)
+* Custom React Hooks Architecture: Decouples stateful telemetry logic (`useAirQuality.ts`) and schedule synthesis (`useRoutinePlan.ts`) from presentation components.
+* App Router Resiliency: Incorporates full Next.js App Router error boundaries (`error.tsx`), skeleton loaders (`loading.tsx`), and custom 404 handling (`not-found.tsx`).
 * Live Multi-City Geocoding: Search any Indian city or district in real time via `/api/geocode` with debounced instant autocomplete.
 * Dual AQI Standards: Toggle between the Indian National CPCB Standard (MoEFCC NAAQS piecewise linear sub-indices) and the US EPA Standard.
 * Boundary Layer Meteorology: Real-time wind speed, temperature, relative humidity, wind stagnation alerts, and atmospheric dispersion indexing.
@@ -85,7 +87,7 @@ Rather than presenting passive AQI numbers that fail to change human habits, Vay
 * Dynamic screen reader live region (`aria-live="polite"` with `aria-atomic="true"`) announcing real-time telemetry changes.
 * Full WCAG 2.1 AA compliant color contrast ratios across all AQI danger levels and alert banners.
 * Accessible data tables utilizing semantic `<caption>`, `<th scope="col">`, and `<th scope="row">` elements.
-* Accessible ARIA attributes (`role="alert"`, `aria-label`, `aria-pressed`, `aria-hidden`) on all interactive controls.
+* Accessible ARIA attributes (`role="alert"`, `aria-label`, `aria-pressed`, `aria-hidden`, and W3C ARIA 1.2 Combobox pattern) on all interactive controls.
 * Visible keyboard focus indicators (`*:focus-visible`) for complete non-mouse navigation.
 * Standard touch target sizes with minimum heights of 44 pixels.
 
@@ -98,6 +100,7 @@ Rather than presenting passive AQI numbers that fail to change human habits, Vay
 * Atmospheric Data: Open-Meteo Air Quality & Meteorology Satellite Telemetry
 * Generative AI: Google Gemini 2.0 Flash (with automatic cascade to Gemini 1.5 Flash and Deterministic Heuristic Engine)
 * Test Runner: Vitest 2.1
+* Linter: ESLint 8 (`next/core-web-vitals` configuration with zero warnings)
 
 ## Local Setup and Verification
 
@@ -111,12 +114,17 @@ Rather than presenting passive AQI numbers that fail to change human habits, Vay
    npm test
    ```
 
-3. Run development server:
+3. Run linter:
+   ```bash
+   npm run lint
+   ```
+
+4. Run development server:
    ```bash
    npm run dev
    ```
 
-4. Build production bundle:
+5. Build production bundle:
    ```bash
    npm run build
    ```

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { HeroCitySearch } from "@/components/HeroCitySearch";
 import { AqiOverviewCard } from "@/components/AqiOverviewCard";
@@ -12,80 +12,32 @@ import { AiRoutinePlanCard } from "@/components/AiRoutinePlanCard";
 import { IndoorAirCard } from "@/components/IndoorAirCard";
 import { CleanAirRoutePlanner } from "@/components/CleanAirRoutePlanner";
 import { CITY_PRESETS } from "@/lib/constants";
-import { getFallbackAirQuality } from "@/lib/air-quality-api";
-import { generateDeterministicPlan } from "@/lib/persona-engine";
-import { CityPreset, AirQualityMetrics, HourlyForecastItem } from "@/types/air-quality";
-import { PersonaType, PersonalizedRoutinePlan } from "@/types/persona";
+import { useAirQuality } from "@/hooks/useAirQuality";
+import { useRoutinePlan } from "@/hooks/useRoutinePlan";
+import { CityPreset } from "@/types/air-quality";
+import { PersonaType } from "@/types/persona";
 import { RefreshCw, AlertCircle } from "lucide-react";
 
 export default function HomePage() {
   const [selectedCity, setSelectedCity] = useState<CityPreset>(CITY_PRESETS[0]);
   const [selectedPersona, setSelectedPersona] = useState<PersonaType>("child_asthma");
-  const [metrics, setMetrics] = useState<AirQualityMetrics>(getFallbackAirQuality().current);
-  const [hourly, setHourly] = useState<HourlyForecastItem[]>(getFallbackAirQuality().hourly);
-  const [plan, setPlan] = useState<PersonalizedRoutinePlan>(
-    generateDeterministicPlan("child_asthma", getFallbackAirQuality().current, getFallbackAirQuality().hourly)
-  );
-  const [isLoadingAqi, setIsLoadingAqi] = useState<boolean>(false);
-  const [isLoadingPlan, setIsLoadingPlan] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [statusAnnouncement, setStatusAnnouncement] = useState<string>("");
 
-  const fetchAqiData = useCallback(async (city: CityPreset) => {
-    setIsLoadingAqi(true);
-    setErrorMessage(null);
-    setStatusAnnouncement(`Fetching real-time atmospheric data for ${city.name}`);
-    try {
-      const res = await fetch(`/api/air-quality?lat=${city.lat}&lon=${city.lon}`);
-      if (!res.ok) throw new Error(`Status ${res.status}`);
-      const data = await res.json();
-      if (data.current && Array.isArray(data.hourly)) {
-        setMetrics(data.current);
-        setHourly(data.hourly);
-        setStatusAnnouncement(`Air quality data for ${city.name} updated. AQI is ${data.current.cpcbAqi || data.current.aqi}.`);
-        return { current: data.current, hourly: data.hourly };
-      }
-      throw new Error("Invalid response format");
-    } catch {
-      const fallback = getFallbackAirQuality();
-      setMetrics(fallback.current);
-      setHourly(fallback.hourly);
-      setStatusAnnouncement(`Loaded calibrated winter smog baseline for ${city.name}.`);
-      return fallback;
-    } finally {
-      setIsLoadingAqi(false);
-    }
-  }, []);
+  const {
+    metrics,
+    hourly,
+    isLoading: isLoadingAqi,
+    error: errorMessage,
+    announcement: statusAnnouncement,
+    setError,
+    setAnnouncement,
+    fetchAqiData,
+  } = useAirQuality(selectedCity);
 
-  const fetchRoutinePlan = useCallback(
-    async (
-      persona: PersonaType,
-      curMetrics: AirQualityMetrics,
-      curHourly: HourlyForecastItem[]
-    ) => {
-      setIsLoadingPlan(true);
-      try {
-        const res = await fetch("/api/ai/routine", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            personaId: persona,
-            current: curMetrics,
-            hourly: curHourly,
-          }),
-        });
-        if (!res.ok) throw new Error("Plan generation failed");
-        const data = await res.json();
-        setPlan(data);
-      } catch {
-        const deterministic = generateDeterministicPlan(persona, curMetrics, curHourly);
-        setPlan(deterministic);
-      } finally {
-        setIsLoadingPlan(false);
-      }
-    },
-    []
-  );
+  const {
+    plan,
+    isLoading: isLoadingPlan,
+    fetchRoutinePlan,
+  } = useRoutinePlan(selectedPersona);
 
   useEffect(() => {
     let isMounted = true;
@@ -110,11 +62,10 @@ export default function HomePage() {
 
   const handleGeolocation = () => {
     if (!navigator.geolocation) {
-      setErrorMessage("Geolocation is not supported by your browser.");
+      setError("Geolocation is not supported by your browser.");
       return;
     }
-    setIsLoadingAqi(true);
-    setStatusAnnouncement("Detecting local geographical coordinates via browser geolocation.");
+    setAnnouncement("Detecting local geographical coordinates via browser geolocation.");
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const detectedCity: CityPreset = {
@@ -127,8 +78,7 @@ export default function HomePage() {
         setSelectedCity(detectedCity);
       },
       () => {
-        setErrorMessage("Unable to retrieve location. Please select a city from the list.");
-        setIsLoadingAqi(false);
+        setError("Unable to retrieve location. Please select a city from the list.");
       }
     );
   };
@@ -173,6 +123,7 @@ export default function HomePage() {
               </p>
             </div>
             <button
+              type="button"
               onClick={() => fetchAqiData(selectedCity)}
               disabled={isLoadingAqi}
               className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition shadow-sm min-h-[44px]"

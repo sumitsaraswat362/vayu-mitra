@@ -96,6 +96,7 @@ export const HeroCitySearch: React.FC<HeroCitySearchProps> = ({
             <Search className="w-5 h-5 text-slate-400 ml-2 shrink-0" aria-hidden="true" />
             <input
               type="text"
+              role="combobox"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search any Indian city or district (e.g. Mathura, Gurugram, Agra)..."
@@ -103,11 +104,13 @@ export const HeroCitySearch: React.FC<HeroCitySearchProps> = ({
               aria-label="Search Indian city or district"
               aria-autocomplete="list"
               aria-expanded={isDropdownOpen}
+              aria-controls="city-search-results"
             />
             {isSearching && (
               <Loader2 className="w-4 h-4 text-teal-600 animate-spin mr-2 shrink-0" aria-hidden="true" />
             )}
             <button
+              type="button"
               onClick={onUseGeolocation}
               disabled={isLoading}
               title="Detect Current Location via GPS"
@@ -119,11 +122,19 @@ export const HeroCitySearch: React.FC<HeroCitySearchProps> = ({
             </button>
           </div>
 
-          {/* Autocomplete Dropdown */}
+          {/* Autocomplete Dropdown with proper ARIA semantics */}
           {isDropdownOpen && searchResults.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl z-50 overflow-hidden divide-y divide-slate-100 dark:divide-slate-800">
+            <div
+              id="city-search-results"
+              role="listbox"
+              aria-label="Matching cities"
+              className="absolute top-full left-0 right-0 mt-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl z-50 overflow-hidden divide-y divide-slate-100 dark:divide-slate-800"
+            >
               {searchResults.map((result) => (
                 <button
+                  type="button"
+                  role="option"
+                  aria-selected={false}
                   key={`${result.id}-${result.lat}-${result.lon}`}
                   onClick={() => handleSelectResult(result)}
                   className="w-full px-4 py-2.5 text-left text-xs flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800 transition"
@@ -149,11 +160,12 @@ export const HeroCitySearch: React.FC<HeroCitySearchProps> = ({
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider text-center mb-2">
             Priority Smog Corridor Stations:
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-2">
+          <nav aria-label="Priority smog stations" className="flex flex-wrap items-center justify-center gap-2">
             {CITY_PRESETS.map((city) => {
               const isSelected = selectedCity.name === city.name;
               return (
                 <button
+                  type="button"
                   key={city.name}
                   onClick={() => onSelectCity(city)}
                   className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition min-h-[36px] ${
@@ -175,7 +187,7 @@ export const HeroCitySearch: React.FC<HeroCitySearchProps> = ({
                 </button>
               );
             })}
-          </div>
+          </nav>
         </div>
       </div>
     </section>
