@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Header } from "@/components/Header";
 import { HeroCitySearch } from "@/components/HeroCitySearch";
 import { AqiOverviewCard } from "@/components/AqiOverviewCard";
+import { GrapProtocolCard } from "@/components/GrapProtocolCard";
+import { PollutantTableCard } from "@/components/PollutantTableCard";
 import { PersonaSelector } from "@/components/PersonaSelector";
 import { HourlyRoutineTimeline } from "@/components/HourlyRoutineTimeline";
 import { AiRoutinePlanCard } from "@/components/AiRoutinePlanCard";
@@ -14,7 +16,7 @@ import { getFallbackAirQuality } from "@/lib/air-quality-api";
 import { generateDeterministicPlan } from "@/lib/persona-engine";
 import { CityPreset, AirQualityMetrics, HourlyForecastItem } from "@/types/air-quality";
 import { PersonaType, PersonalizedRoutinePlan } from "@/types/persona";
-import { RefreshCw, Sparkles, AlertCircle } from "lucide-react";
+import { RefreshCw, AlertCircle } from "lucide-react";
 
 export default function HomePage() {
   const [selectedCity, setSelectedCity] = useState<CityPreset>(CITY_PRESETS[0]);
@@ -27,10 +29,12 @@ export default function HomePage() {
   const [isLoadingAqi, setIsLoadingAqi] = useState<boolean>(false);
   const [isLoadingPlan, setIsLoadingPlan] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [statusAnnouncement, setStatusAnnouncement] = useState<string>("");
 
   const fetchAqiData = useCallback(async (city: CityPreset) => {
     setIsLoadingAqi(true);
     setErrorMessage(null);
+    setStatusAnnouncement(`Fetching real-time atmospheric data for ${city.name}`);
     try {
       const res = await fetch(`/api/air-quality?lat=${city.lat}&lon=${city.lon}`);
       if (!res.ok) throw new Error(`Status ${res.status}`);
@@ -38,6 +42,7 @@ export default function HomePage() {
       if (data.current && Array.isArray(data.hourly)) {
         setMetrics(data.current);
         setHourly(data.hourly);
+        setStatusAnnouncement(`Air quality data for ${city.name} updated. AQI is ${data.current.aqi}.`);
         return { current: data.current, hourly: data.hourly };
       }
       throw new Error("Invalid response format");
@@ -45,6 +50,7 @@ export default function HomePage() {
       const fallback = getFallbackAirQuality();
       setMetrics(fallback.current);
       setHourly(fallback.hourly);
+      setStatusAnnouncement(`Loaded calibrated winter smog baseline for ${city.name}.`);
       return fallback;
     } finally {
       setIsLoadingAqi(false);
@@ -108,6 +114,7 @@ export default function HomePage() {
       return;
     }
     setIsLoadingAqi(true);
+    setStatusAnnouncement("Detecting local geographical coordinates via browser geolocation.");
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const detectedCity: CityPreset = {
@@ -130,7 +137,12 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
       <Header currentAqi={metrics.aqi} cityName={selectedCity.name} />
 
-      <main className="flex-1">
+      {/* Screen Reader Live Region */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {statusAnnouncement}
+      </div>
+
+      <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
         <HeroCitySearch
           selectedCity={selectedCity}
           onSelectCity={handleCityChange}
@@ -142,7 +154,7 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
             <div
               role="alert"
-              className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-xs text-amber-800 dark:text-amber-300 flex items-center gap-2"
+              className="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-xs text-amber-800 dark:text-amber-300 flex items-center gap-2"
             >
               <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
               <span>{errorMessage}</span>
@@ -151,27 +163,31 @@ export default function HomePage() {
         )}
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                Live Air Quality Dashboard
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+                Atmospheric Dynamics and Telemetry
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Calibrated against WHO particulate thresholds and CPCB air quality indices.
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Calibrated against WHO Global Air Quality Guidelines and Indian CPCB NAAQS standards.
               </p>
             </div>
             <button
               onClick={() => fetchAqiData(selectedCity)}
               disabled={isLoadingAqi}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 text-slate-700 dark:text-slate-300 transition"
-              aria-label="Refresh Air Quality Data"
+              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition shadow-sm min-h-[44px]"
+              aria-label="Refresh Air Quality Telemetry"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isLoadingAqi ? "animate-spin" : ""}`} aria-hidden="true" />
-              <span>Refresh</span>
+              <span>Refresh Telemetry</span>
             </button>
           </div>
 
           <AqiOverviewCard metrics={metrics} cityName={selectedCity.name} />
+
+          <GrapProtocolCard aqi={metrics.aqi} />
+
+          <PollutantTableCard metrics={metrics} />
 
           <PersonaSelector
             selectedPersona={selectedPersona}
@@ -194,12 +210,12 @@ export default function HomePage() {
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-700 dark:text-slate-300">Vayu-Mitra</span>
             <span>&bull;</span>
-            <span>Winter Smog and Air Quality Resilience Assistant</span>
+            <span>Urban Winter Smog and Air Quality Resilience Assistant</span>
           </div>
           <div className="flex items-center gap-4 text-slate-400">
-            <span>Built for Urban Air Resilience</span>
-            <span>Open-Meteo &amp; CPCB Feeds</span>
-            <span>WHO Guideline Compliant</span>
+            <span>Open-Meteo Atmospheric Feed</span>
+            <span>WHO 2021 Guidelines</span>
+            <span>CAQM GRAP Compliant</span>
           </div>
         </div>
       </footer>
