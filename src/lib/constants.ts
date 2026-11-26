@@ -1,4 +1,4 @@
-import { CityPreset, AqiCategory } from "@/types/air-quality";
+import { CityPreset, AqiCategory, CpcbCategory } from "@/types/air-quality";
 import { PersonaProfile } from "@/types/persona";
 
 export const APP_NAME = "Vayu-Mitra";
@@ -34,18 +34,18 @@ export const CITY_PRESETS: CityPreset[] = [
     isHighSmogZone: true,
   },
   {
-    name: "Mumbai",
-    state: "Maharashtra",
-    lat: 19.0760,
-    lon: 72.8777,
-    isHighSmogZone: false,
-  },
-  {
     name: "Kolkata",
     state: "West Bengal",
     lat: 22.5726,
     lon: 88.3639,
     isHighSmogZone: true,
+  },
+  {
+    name: "Mumbai",
+    state: "Maharashtra",
+    lat: 19.0760,
+    lon: 72.8777,
+    isHighSmogZone: false,
   },
   {
     name: "Bengaluru",
@@ -62,7 +62,71 @@ export const WHO_GUIDELINES = {
   pm10Daily: 45,
   no2Daily: 25,
   o3Daily: 100,
+  so2Daily: 40,
+  coDaily: 4,
 };
+
+export const CPCB_NAAQS_GUIDELINES = {
+  pm25Daily: 60,
+  pm10Daily: 100,
+  no2Daily: 80,
+  o3Daily: 100,
+  so2Daily: 80,
+  coDaily: 4,
+};
+
+export function calculateCpcbSubIndex(
+  conc: number,
+  breakpoints: Array<{ cLow: number; cHigh: number; iLow: number; iHigh: number }>
+): number {
+  for (const b of breakpoints) {
+    if (conc >= b.cLow && conc <= b.cHigh) {
+      return Math.round(((b.iHigh - b.iLow) / (b.cHigh - b.cLow)) * (conc - b.cLow) + b.iLow);
+    }
+  }
+  const last = breakpoints[breakpoints.length - 1];
+  if (conc > last.cHigh) {
+    return Math.min(500, Math.round(((500 - last.iHigh) / (500 - last.cHigh)) * (conc - last.cHigh) + last.iHigh));
+  }
+  return 0;
+}
+
+export function calculateCpcbAqi(
+  pm25: number,
+  pm10: number
+): { aqi: number; category: CpcbCategory } {
+  const pm25Breakpoints = [
+    { cLow: 0, cHigh: 30, iLow: 0, iHigh: 50 },
+    { cLow: 31, cHigh: 60, iLow: 51, iHigh: 100 },
+    { cLow: 61, cHigh: 90, iLow: 101, iHigh: 200 },
+    { cLow: 91, cHigh: 120, iLow: 201, iHigh: 300 },
+    { cLow: 121, cHigh: 250, iLow: 301, iHigh: 400 },
+    { cLow: 251, cHigh: 500, iLow: 401, iHigh: 500 },
+  ];
+
+  const pm10Breakpoints = [
+    { cLow: 0, cHigh: 50, iLow: 0, iHigh: 50 },
+    { cLow: 51, cHigh: 100, iLow: 51, iHigh: 100 },
+    { cLow: 101, cHigh: 250, iLow: 101, iHigh: 200 },
+    { cLow: 251, cHigh: 350, iLow: 201, iHigh: 300 },
+    { cLow: 351, cHigh: 430, iLow: 301, iHigh: 400 },
+    { cLow: 431, cHigh: 550, iLow: 401, iHigh: 500 },
+  ];
+
+  const iPm25 = calculateCpcbSubIndex(pm25, pm25Breakpoints);
+  const iPm10 = calculateCpcbSubIndex(pm10, pm10Breakpoints);
+  const aqi = Math.max(iPm25, iPm10);
+
+  let category: CpcbCategory = "Good";
+  if (aqi <= 50) category = "Good";
+  else if (aqi <= 100) category = "Satisfactory";
+  else if (aqi <= 200) category = "Moderate";
+  else if (aqi <= 300) category = "Poor";
+  else if (aqi <= 400) category = "Very Poor";
+  else category = "Severe";
+
+  return { aqi, category };
+}
 
 export const AQI_LEVELS: Record<
   AqiCategory,
@@ -79,7 +143,7 @@ export const AQI_LEVELS: Record<
   Good: {
     min: 0,
     max: 50,
-    badgeColor: "bg-emerald-500",
+    badgeColor: "bg-emerald-600",
     textColor: "text-emerald-700 dark:text-emerald-300",
     borderColor: "border-emerald-300 dark:border-emerald-800",
     bgColor: "bg-emerald-50 dark:bg-emerald-950/40",
@@ -88,7 +152,7 @@ export const AQI_LEVELS: Record<
   Moderate: {
     min: 51,
     max: 100,
-    badgeColor: "bg-yellow-500",
+    badgeColor: "bg-yellow-600",
     textColor: "text-yellow-700 dark:text-yellow-300",
     borderColor: "border-yellow-300 dark:border-yellow-800",
     bgColor: "bg-yellow-50 dark:bg-yellow-950/40",
@@ -97,7 +161,7 @@ export const AQI_LEVELS: Record<
   Poor: {
     min: 101,
     max: 200,
-    badgeColor: "bg-orange-500",
+    badgeColor: "bg-orange-600",
     textColor: "text-orange-700 dark:text-orange-300",
     borderColor: "border-orange-300 dark:border-orange-800",
     bgColor: "bg-orange-50 dark:bg-orange-950/40",
@@ -106,7 +170,7 @@ export const AQI_LEVELS: Record<
   "Very Poor": {
     min: 201,
     max: 300,
-    badgeColor: "bg-red-500",
+    badgeColor: "bg-red-600",
     textColor: "text-red-700 dark:text-red-300",
     borderColor: "border-red-300 dark:border-red-800",
     bgColor: "bg-red-50 dark:bg-red-950/40",
@@ -115,7 +179,7 @@ export const AQI_LEVELS: Record<
   Severe: {
     min: 301,
     max: 500,
-    badgeColor: "bg-purple-600",
+    badgeColor: "bg-purple-700",
     textColor: "text-purple-700 dark:text-purple-300",
     borderColor: "border-purple-300 dark:border-purple-800",
     bgColor: "bg-purple-50 dark:bg-purple-950/40",

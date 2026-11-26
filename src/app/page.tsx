@@ -42,7 +42,7 @@ export default function HomePage() {
       if (data.current && Array.isArray(data.hourly)) {
         setMetrics(data.current);
         setHourly(data.hourly);
-        setStatusAnnouncement(`Air quality data for ${city.name} updated. AQI is ${data.current.aqi}.`);
+        setStatusAnnouncement(`Air quality data for ${city.name} updated. AQI is ${data.current.cpcbAqi || data.current.aqi}.`);
         return { current: data.current, hourly: data.hourly };
       }
       throw new Error("Invalid response format");
@@ -135,7 +135,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
-      <Header currentAqi={metrics.aqi} cityName={selectedCity.name} />
+      <Header currentAqi={metrics.cpcbAqi || metrics.aqi} cityName={selectedCity.name} />
 
       {/* Screen Reader Live Region */}
       <div className="sr-only" aria-live="polite" aria-atomic="true">
@@ -185,7 +185,7 @@ export default function HomePage() {
 
           <AqiOverviewCard metrics={metrics} cityName={selectedCity.name} />
 
-          <GrapProtocolCard aqi={metrics.aqi} />
+          <GrapProtocolCard aqi={metrics.cpcbAqi || metrics.aqi} />
 
           <PollutantTableCard metrics={metrics} />
 
@@ -194,7 +194,12 @@ export default function HomePage() {
             onSelectPersona={handlePersonaChange}
           />
 
-          <AiRoutinePlanCard plan={plan} isLoading={isLoadingPlan} />
+          <AiRoutinePlanCard
+            plan={plan}
+            isLoading={isLoadingPlan}
+            cityName={selectedCity.name}
+            aqi={metrics.cpcbAqi || metrics.aqi}
+          />
 
           <HourlyRoutineTimeline hourly={hourly} />
 
@@ -213,7 +218,7 @@ export default function HomePage() {
             <span>Urban Winter Smog and Air Quality Resilience Assistant</span>
           </div>
           <div className="flex items-center gap-4 text-slate-400">
-            <span>Open-Meteo Atmospheric Feed</span>
+            <span>Open-Meteo Atmospheric &amp; Satellite Feed</span>
             <span>WHO 2021 Guidelines</span>
             <span>CAQM GRAP Compliant</span>
           </div>

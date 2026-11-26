@@ -2,14 +2,14 @@
 
 Vayu-Mitra is an open-access atmospheric resilience platform engineered to protect urban citizens across Indo-Gangetic smog corridors (Delhi NCR, Mathura, Noida, Lucknow, and Kolkata) during severe winter pollution episodes.
 
-Rather than presenting passive AQI numbers that fail to change human habits, Vayu-Mitra models diurnal thermal radiation inversions, particulate penetration dynamics (PM2.5, PM10, NO2, O3), and the official Graded Response Action Plan (GRAP) to deliver personalized daily routines, indoor ventilation schedules, and low-exposure transit pathways.
+Rather than presenting passive AQI numbers that fail to change human habits, Vayu-Mitra models diurnal thermal radiation inversions, particulate penetration dynamics (PM2.5, PM10, NO2, SO2, CO, O3), real-time boundary layer meteorology, and the statutory Graded Response Action Plan (GRAP) to deliver personalized daily routines, indoor ventilation schedules, and low-exposure transit pathways.
 
 ## Problem Statement Alignment
 
 * Chosen Vertical: Urban Air Quality Assistance
 * Core Atmospheric Challenge: During north Indian winters, nocturnal radiative cooling creates strong ground-level temperature inversions between 9 PM and 9 AM. Sinking cold air forms an atmospheric lid that concentrates vehicular exhaust, stubble smoke, and industrial particulate matter at street level.
 * Real-World Usability: Tailored protection protocols for vulnerable demographics (asthmatic children, elderly citizens with COPD, outdoor commuters, and morning runners) based on clinical inhalation thresholds rather than raw regional averages.
-* Statutory Alignment: Fully incorporates the Commission for Air Quality Management (CAQM) Graded Response Action Plan (GRAP Stages I to IV) to inform citizens of active vehicular and school advisories in real time.
+* Statutory Regulatory Alignment: Fully incorporates the Commission for Air Quality Management (CAQM) Graded Response Action Plan (GRAP Stages I to IV) to inform citizens of active vehicular and school advisories in real time.
 
 ## Architectural Highlights
 
@@ -19,9 +19,12 @@ Rather than presenting passive AQI numbers that fail to change human habits, Vay
   3. Daily Commuter (Traffic corridor soot reduction, underground metro routing)
   4. Morning Athlete / Runner (Inversion cardio hazard mitigation, gym workout shifts)
   5. General Urban Resident (Balanced chores and window ventilation discipline)
-* Diurnal Inversion Modeling: Distinguishes between nocturnal ground-trapping hours (9 PM to 9 AM) and solar boundary layer clearance windows (1 PM to 4 PM).
+* Live Multi-City Geocoding: Search any Indian city or district in real time via `/api/geocode` with debounced instant autocomplete.
+* Dual AQI Standards: Toggle between the Indian National CPCB Standard (MoEFCC NAAQS piecewise linear sub-indices) and the US EPA Standard.
+* Boundary Layer Meteorology: Real-time wind speed, temperature, relative humidity, wind stagnation alerts, and atmospheric dispersion indexing.
 * Graded Response Action Plan (GRAP): Dynamically activates statutory enforcement guidelines (Stages I, II, III, and IV) based on live air quality index levels.
-* Accessible Pollutant Matrix: Full tabular breakdown comparing observed PM2.5, PM10, NO2, and O3 against World Health Organization (WHO 2021) and Indian CPCB NAAQS 24-hour limits.
+* Accessible Pollutant Matrix: Full tabular breakdown comparing observed PM2.5, PM10, NO2, SO2, CO, and O3 against World Health Organization (WHO 2021) and Indian CPCB NAAQS 24-hour limits.
+* Report Export: Generate and download an official residential health advisory text file (.txt) with a single click.
 * Indoor Air Protocol: Enforces the 15-Minute Flush Rule (ventilation between 1 PM and 3 PM) and HEPA purifier positioning protocols.
 * Transit Exposure Matrix: Quantifies respiratory particulate intake across 5 transit modes (Underground Metro, AC Car with Recirculation, Electric Bus, Two-Wheeler, and Roadside Walking).
 
@@ -46,18 +49,18 @@ Rather than presenting passive AQI numbers that fail to change human habits, Vay
 
 ### 3. Efficiency (Medium Impact)
 * Blazing fast Next.js App Router with automatic static optimization.
-* Client-side bundle size: First Load JS is only 106 kB.
+* Client-side bundle size: First Load JS is only 108 kB.
 * Edge-ready caching headers (`Cache-Control: public, s-maxage=900`) preventing redundant upstream network calls.
 * High-performance deterministic fallback generator guaranteeing instant response times (under 15 milliseconds).
 
 ### 4. Testing (High Impact)
-* Comprehensive unit test suite implemented with Vitest (16 automated tests across 5 test suites):
-  * `src/__tests__/air-quality.test.ts`: Verifies AQI bracket categorizations, inversion time calculation, and fallback telemetry.
+* Comprehensive unit test suite implemented with Vitest (17 automated tests across 5 test suites):
+  * `src/__tests__/air-quality.test.ts`: Verifies US EPA AQI brackets, Indian CPCB MoEFCC sub-indices, inversion hours, and fallback weather telemetry.
   * `src/__tests__/persona.test.ts`: Validates complete schedule generation and vulnerability rules across all 5 personas.
   * `src/__tests__/gemini.test.ts`: Asserts graceful heuristic fallback during missing API credentials.
   * `src/__tests__/security.test.ts`: Asserts rejection of out-of-bounds coordinates, NaNs, and non-finite values.
   * `src/__tests__/grap.test.ts`: Validates CAQM GRAP threshold transitions across Stages I, II, III, and IV.
-* 16 out of 16 automated tests passing with 100 percent reliability.
+* 17 out of 17 automated tests passing with 100 percent reliability.
 
 ### 5. Accessibility (Low/Medium Impact)
 * Native semantic HTML5 landmark structure (`header`, `nav`, `main`, `section`, `footer`).
@@ -71,7 +74,7 @@ Rather than presenting passive AQI numbers that fail to change human habits, Vay
 
 ### 6. Problem Statement Alignment (High Impact)
 * Addresses winter smog and crop residue burning in north India.
-* Grounded in atmospheric physics (diurnal radiation inversion layers) and clinical respiratory medicine (developing bronchial sensitivity in children, COPD in elderly).
+* Grounded in atmospheric physics (diurnal radiation inversion layers, boundary layer height, wind stagnation) and clinical respiratory medicine (developing bronchial sensitivity in children, COPD in elderly).
 * Practical and actionable guidance rather than abstract data display.
 
 ## Technology Stack
@@ -80,7 +83,7 @@ Rather than presenting passive AQI numbers that fail to change human habits, Vay
 * Language: TypeScript 5
 * Styling: Tailwind CSS 3
 * Iconography: Lucide React
-* Atmospheric Data: Open-Meteo Air Quality Telemetry & Regional Inversion Model
+* Atmospheric Data: Open-Meteo Air Quality & Meteorology Satellite Telemetry
 * Generative AI: Google Gemini 1.5 Flash (via `/api/ai/routine`) with Deterministic Heuristic Fallback
 * Test Runner: Vitest 2.1
 
