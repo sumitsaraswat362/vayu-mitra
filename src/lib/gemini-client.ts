@@ -16,12 +16,17 @@ export async function generateAiRoutinePlan(
 
   try {
     const prompt = `You are Vayu-Mitra, an expert AI assistant specializing in urban winter smog resilience and respiratory protection.
-Current Air Quality Data:
-- AQI: ${current.aqi} (${current.category})
+Current Air Quality Telemetry:
+- CPCB Indian AQI: ${current.cpcbAqi} (${current.cpcbCategory})
+- US EPA AQI: ${current.aqi} (${current.category})
 - PM2.5: ${current.pm25} ug/m3
 - PM10: ${current.pm10} ug/m3
 - NO2: ${current.no2} ug/m3
 - O3: ${current.o3} ug/m3
+- Temperature: ${current.weather?.temperature ?? 20} C
+- Humidity: ${current.weather?.humidity ?? 70}%
+- Wind Speed: ${current.weather?.windSpeed ?? 3} km/h
+- Dispersion Status: ${current.weather?.dispersionIndex ?? "Stagnant"}
 
 Target Persona: ${personaId}
 
@@ -40,8 +45,9 @@ Provide a personalized winter smog routine plan strictly formatted as valid JSON
 }
 Important: Do not output markdown codeblocks. Output only raw valid JSON. Do not use double hyphens, em dashes, or en dashes.`;
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+    // Primary modern model: Google Gemini 2.0 Flash
+    let response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,6 +60,24 @@ Important: Do not output markdown codeblocks. Output only raw valid JSON. Do not
         }),
       }
     );
+
+    // Fallback model: Google Gemini 1.5 Flash
+    if (!response.ok) {
+      response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.2,
+              responseMimeType: "application/json",
+            },
+          }),
+        }
+      );
+    }
 
     if (!response.ok) {
       return generateDeterministicPlan(personaId, current, hourly);
