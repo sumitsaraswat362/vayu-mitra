@@ -36,7 +36,9 @@ export interface BigQueryHistoricalBenchmark {
  * Returns BigQuery baseline benchmarks for Indo-Gangetic smog corridors
  * Calibrated against CPCB and EPA public atmospheric records.
  */
-export function getBigQueryAtmosphericBenchmark(cityName: string): BigQueryHistoricalBenchmark {
+export function getBigQueryAtmosphericBenchmark(
+  cityName: string
+): BigQueryHistoricalBenchmark {
   const normalized = cityName.toLowerCase().trim();
 
   if (normalized.includes("delhi") || normalized.includes("noida")) {
@@ -48,7 +50,11 @@ export function getBigQueryAtmosphericBenchmark(cityName: string): BigQueryHisto
     };
   }
 
-  if (normalized.includes("mathura") || normalized.includes("lucknow") || normalized.includes("kanpur")) {
+  if (
+    normalized.includes("mathura") ||
+    normalized.includes("lucknow") ||
+    normalized.includes("kanpur")
+  ) {
     return {
       decadeAveragePm25: 128,
       tenYearTrend: "Stable",

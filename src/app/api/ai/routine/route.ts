@@ -19,7 +19,10 @@ export async function POST(request: NextRequest) {
 
     if (!rateCheck.allowed) {
       return NextResponse.json(
-        { error: "AI synthesis rate limit exceeded. Please wait a moment.", code: "RATE_LIMITED" },
+        {
+          error: "AI synthesis rate limit exceeded. Please wait a moment.",
+          code: "RATE_LIMITED",
+        },
         {
           status: 429,
           headers: {
@@ -34,7 +37,10 @@ export async function POST(request: NextRequest) {
     const contentLength = request.headers.get("content-length");
     if (contentLength && parseInt(contentLength, 10) > 32768) {
       return NextResponse.json(
-        { error: "Payload exceeds 32KB security limit.", code: "PAYLOAD_TOO_LARGE" },
+        {
+          error: "Payload exceeds 32KB security limit.",
+          code: "PAYLOAD_TOO_LARGE",
+        },
         { status: 413 }
       );
     }
@@ -44,14 +50,20 @@ export async function POST(request: NextRequest) {
       body = await request.json();
     } catch {
       return NextResponse.json(
-        { error: "Malformed JSON payload in request body.", code: "MALFORMED_JSON" },
+        {
+          error: "Malformed JSON payload in request body.",
+          code: "MALFORMED_JSON",
+        },
         { status: 400 }
       );
     }
 
     if (!body || typeof body !== "object") {
       return NextResponse.json(
-        { error: "Request body must be a valid JSON object.", code: "INVALID_BODY" },
+        {
+          error: "Request body must be a valid JSON object.",
+          code: "INVALID_BODY",
+        },
         { status: 400 }
       );
     }
@@ -62,8 +74,11 @@ export async function POST(request: NextRequest) {
       hourly?: unknown;
     };
 
-    const sanitizedPersona = typeof personaId === "string" ? sanitizeString(personaId) : "";
-    const targetPersona: PersonaType = VALID_PERSONAS.includes(sanitizedPersona as PersonaType)
+    const sanitizedPersona =
+      typeof personaId === "string" ? sanitizeString(personaId) : "";
+    const targetPersona: PersonaType = VALID_PERSONAS.includes(
+      sanitizedPersona as PersonaType
+    )
       ? (sanitizedPersona as PersonaType)
       : "general_citizen";
 
@@ -74,15 +89,25 @@ export async function POST(request: NextRequest) {
       !isFinite((current as AirQualityMetrics).aqi)
     ) {
       return NextResponse.json(
-        { error: "Valid current air quality metrics required with finite AQI index.", code: "INVALID_AQI" },
+        {
+          error:
+            "Valid current air quality metrics required with finite AQI index.",
+          code: "INVALID_AQI",
+        },
         { status: 400 }
       );
     }
 
     const safeCurrent = current as AirQualityMetrics;
-    const safeHourly = Array.isArray(hourly) ? (hourly as HourlyForecastItem[]) : [];
+    const safeHourly = Array.isArray(hourly)
+      ? (hourly as HourlyForecastItem[])
+      : [];
 
-    const plan = await generateAiRoutinePlan(targetPersona, safeCurrent, safeHourly);
+    const plan = await generateAiRoutinePlan(
+      targetPersona,
+      safeCurrent,
+      safeHourly
+    );
 
     return NextResponse.json(plan, {
       status: 200,
@@ -94,9 +119,13 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Plan synthesis failed";
+    const message =
+      err instanceof Error ? err.message : "Plan synthesis failed";
     return NextResponse.json(
-      { error: "Unable to synthesize personalized routine plan.", details: message },
+      {
+        error: "Unable to synthesize personalized routine plan.",
+        details: message,
+      },
       { status: 500 }
     );
   }

@@ -12,7 +12,8 @@ export default function Loading() {
           Ingesting Atmospheric Telemetry
         </h2>
         <p className="text-xs text-slate-500 mt-1">
-          Connecting to Open-Meteo satellite feeds and CPCB NAAQS calibrations...
+          Connecting to Open-Meteo satellite feeds and CPCB NAAQS
+          calibrations...
         </p>
       </div>
     </div>

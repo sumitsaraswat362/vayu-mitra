@@ -1,36 +1,39 @@
-# dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.js
 .yarn/install-state.gz
 
-# testing
+# Testing and Coverage
 /coverage
 
-# next.js
+# Next.js Build Output
 /.next/
 /out/
 
-# production
+# Production Builds
 /build
 /dist
 
-# misc
+# OS and Editor Misc
 .DS_Store
 *.pem
+*.tsbuildinfo
+next-env.d.ts
 
-# debug
+# Debug Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
-.env*.local
+# Environment and Secret Files (Strictly Ignored)
 .env
+.env*
+.env*.local
+.env.local
+.env.development
+.env.test
+.env.production
 
-# vercel
+# Vercel Deployment Cache
 .vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts

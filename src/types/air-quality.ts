@@ -1,17 +1,7 @@
-export type AqiCategory =
-  | "Good"
-  | "Moderate"
-  | "Poor"
-  | "Very Poor"
-  | "Severe";
+export type AqiCategory = "Good" | "Moderate" | "Poor" | "Very Poor" | "Severe";
 
 export type CpcbCategory =
-  | "Good"
-  | "Satisfactory"
-  | "Moderate"
-  | "Poor"
-  | "Very Poor"
-  | "Severe";
+  "Good" | "Satisfactory" | "Moderate" | "Poor" | "Very Poor" | "Severe";
 
 export interface MeteorologicalMetrics {
   temperature: number; // Celsius

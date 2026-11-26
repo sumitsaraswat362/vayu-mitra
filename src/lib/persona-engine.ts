@@ -7,7 +7,8 @@ export function generateDeterministicPlan(
   current: AirQualityMetrics,
   hourly: HourlyForecastItem[]
 ): PersonalizedRoutinePlan {
-  const persona = PERSONA_PROFILES.find((p) => p.id === personaId) ?? PERSONA_PROFILES[0];
+  const persona =
+    PERSONA_PROFILES.find((p) => p.id === personaId) ?? PERSONA_PROFILES[0];
   const aqi = current.aqi;
 
   let cleanestHour = hourly[13] ?? hourly[0];
@@ -32,8 +33,8 @@ export function generateDeterministicPlan(
       aqi > 250
         ? "Extreme Smog Inversion Zone"
         : aqi > 150
-        ? "Elevated Particulate Trapping"
-        : "Moderate Risk Window",
+          ? "Elevated Particulate Trapping"
+          : "Moderate Risk Window",
   };
 
   let summaryAdvice = "";
@@ -48,25 +49,29 @@ export function generateDeterministicPlan(
         timeSlot: "07:00 AM - 08:30 AM",
         activity: "School Transit",
         recommendation: aqi > 150 ? "Avoid" : "Caution",
-        notes: "Keep vehicle windows sealed with recirculate mode ON; wear child sized N95 mask.",
+        notes:
+          "Keep vehicle windows sealed with recirculate mode ON; wear child sized N95 mask.",
       },
       {
         timeSlot: "10:30 AM - 11:30 AM",
         activity: "Recess / Physical Education",
         recommendation: "Avoid",
-        notes: "Request indoor library or board game alternative from school administration.",
+        notes:
+          "Request indoor library or board game alternative from school administration.",
       },
       {
         timeSlot: "02:00 PM - 03:30 PM",
         activity: "Outdoor Garden Play / Walk",
         recommendation: aqi > 200 ? "Avoid" : "Safe",
-        notes: "Safest atmospheric clearance period; restrict to light, non-strenuous play.",
+        notes:
+          "Safest atmospheric clearance period; restrict to light, non-strenuous play.",
       },
       {
         timeSlot: "06:00 PM - 09:00 PM",
         activity: "Evening Study and Rest",
         recommendation: "Safe",
-        notes: "Ensure indoor room doors remain shut; avoid agarbatti, incense, or frying oil smoke.",
+        notes:
+          "Ensure indoor room doors remain shut; avoid agarbatti, incense, or frying oil smoke.",
       }
     );
     indoorProtectionChecklist.push(
@@ -84,25 +89,29 @@ export function generateDeterministicPlan(
         timeSlot: "06:30 AM - 08:00 AM",
         activity: "Morning Walk / Pranayama",
         recommendation: "Avoid",
-        notes: "Critical cold smog danger. Practice gentle yoga or walking indoors in filtered air.",
+        notes:
+          "Critical cold smog danger. Practice gentle yoga or walking indoors in filtered air.",
       },
       {
         timeSlot: "11:00 AM - 01:00 PM",
         activity: "Doctor Visit / Medical Errands",
         recommendation: "Caution",
-        notes: "Double layer mask or certified N95; minimize roadside waiting times.",
+        notes:
+          "Double layer mask or certified N95; minimize roadside waiting times.",
       },
       {
         timeSlot: "02:00 PM - 03:30 PM",
         activity: "Sunlight Exposure / Veranda Sit-out",
         recommendation: aqi > 250 ? "Caution" : "Safe",
-        notes: "Midday sun helps warm air layers and offers safe vitamin D synthesis window.",
+        notes:
+          "Midday sun helps warm air layers and offers safe vitamin D synthesis window.",
       },
       {
         timeSlot: "07:00 PM - 09:30 PM",
         activity: "Evening Relaxation",
         recommendation: "Safe",
-        notes: "Keep warm saline gargle routine ready; avoid exposure to open woodfires or street smoke.",
+        notes:
+          "Keep warm saline gargle routine ready; avoid exposure to open woodfires or street smoke.",
       }
     );
     indoorProtectionChecklist.push(
@@ -120,25 +129,29 @@ export function generateDeterministicPlan(
         timeSlot: "06:00 AM - 07:30 AM",
         activity: "Outdoor Long Distance Run",
         recommendation: "Avoid",
-        notes: "High inhalation rate amplifies toxicity tenfold. Swap for indoor treadmill or gym.",
+        notes:
+          "High inhalation rate amplifies toxicity tenfold. Swap for indoor treadmill or gym.",
       },
       {
         timeSlot: "12:30 PM - 02:00 PM",
         activity: "Gym Workout / Strength Training",
         recommendation: "Safe",
-        notes: "Ideal timing; indoor gym environment with air conditioning reduces exposure.",
+        notes:
+          "Ideal timing; indoor gym environment with air conditioning reduces exposure.",
       },
       {
         timeSlot: "04:30 PM - 05:30 PM",
         activity: "Outdoor Interval Training / Cycling",
         recommendation: aqi > 180 ? "Caution" : "Safe",
-        notes: "Check real-time local station AQI; terminate session if throat irritation occurs.",
+        notes:
+          "Check real-time local station AQI; terminate session if throat irritation occurs.",
       },
       {
         timeSlot: "08:00 PM - 10:00 PM",
         activity: "Recovery and Stretching",
         recommendation: "Safe",
-        notes: "Hydrate heavily with antioxidant-rich fluids (warm lemon ginger tea) to soothe bronchial tract.",
+        notes:
+          "Hydrate heavily with antioxidant-rich fluids (warm lemon ginger tea) to soothe bronchial tract.",
       }
     );
     indoorProtectionChecklist.push(
@@ -156,25 +169,29 @@ export function generateDeterministicPlan(
         timeSlot: "08:30 AM - 09:45 AM",
         activity: "Morning Office Commute",
         recommendation: "Caution",
-        notes: "Avoid open two wheelers without N95; select metro rail transit whenever feasible.",
+        notes:
+          "Avoid open two wheelers without N95; select metro rail transit whenever feasible.",
       },
       {
         timeSlot: "01:00 PM - 02:00 PM",
         activity: "Lunch Hour Errand",
         recommendation: "Safe",
-        notes: "Best outdoor ambient window; walk away from heavy traffic intersections.",
+        notes:
+          "Best outdoor ambient window; walk away from heavy traffic intersections.",
       },
       {
         timeSlot: "06:30 PM - 08:00 PM",
         activity: "Evening Return Commute",
         recommendation: "Caution",
-        notes: "Peak traffic combines with evening cooling inversion; keep vehicle ventilation on internal recirculation.",
+        notes:
+          "Peak traffic combines with evening cooling inversion; keep vehicle ventilation on internal recirculation.",
       },
       {
         timeSlot: "08:30 PM - 10:00 PM",
         activity: "Dinner and Rest",
         recommendation: "Safe",
-        notes: "Take warm shower to wash particulate soot from hair and skin before sleep.",
+        notes:
+          "Take warm shower to wash particulate soot from hair and skin before sleep.",
       }
     );
     indoorProtectionChecklist.push(
@@ -192,13 +209,15 @@ export function generateDeterministicPlan(
         timeSlot: "07:00 AM - 09:00 AM",
         activity: "Morning Household Chores",
         recommendation: "Safe",
-        notes: "Keep doors and windows closed; run exhaust only in kitchen while cooking.",
+        notes:
+          "Keep doors and windows closed; run exhaust only in kitchen while cooking.",
       },
       {
         timeSlot: "01:00 PM - 03:00 PM",
         activity: "Airing Out Home / Ventilation",
         recommendation: "Safe",
-        notes: "Safest hour for quick 15 minute cross-ventilation to flush out indoor carbon dioxide.",
+        notes:
+          "Safest hour for quick 15 minute cross-ventilation to flush out indoor carbon dioxide.",
       },
       {
         timeSlot: "05:30 PM - 07:00 PM",
@@ -210,7 +229,8 @@ export function generateDeterministicPlan(
         timeSlot: "08:00 PM - 10:30 PM",
         activity: "Night Family Time",
         recommendation: "Safe",
-        notes: "Close all external windows before 8 PM as night cold inversion descends.",
+        notes:
+          "Close all external windows before 8 PM as night cold inversion descends.",
       }
     );
     indoorProtectionChecklist.push(

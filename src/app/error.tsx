@@ -25,7 +25,8 @@ export default function GlobalError({
           Atmospheric Telemetry Interrupted
         </h1>
         <p className="text-xs text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
-          An unexpected error occurred while processing air quality metrics. The system state has been preserved.
+          An unexpected error occurred while processing air quality metrics. The
+          system state has been preserved.
         </p>
         <button
           type="button"

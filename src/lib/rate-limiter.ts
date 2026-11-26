@@ -55,7 +55,10 @@ export function checkRateLimit(
 
   if (record.timestamps.length >= limit) {
     const oldestTimestamp = record.timestamps[0];
-    const resetSeconds = Math.max(1, Math.ceil((oldestTimestamp + windowMs - now) / 1000));
+    const resetSeconds = Math.max(
+      1,
+      Math.ceil((oldestTimestamp + windowMs - now) / 1000)
+    );
     return {
       allowed: false,
       limit,

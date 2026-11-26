@@ -20,7 +20,9 @@ export function isSmogInversionHour(hour: number): boolean {
   return hour >= 21 || hour <= 9;
 }
 
-export async function searchIndianCities(query: string): Promise<GeocodingResult[]> {
+export async function searchIndianCities(
+  query: string
+): Promise<GeocodingResult[]> {
   if (!query || query.trim().length < 2) return [];
 
   try {
@@ -38,7 +40,7 @@ export async function searchIndianCities(query: string): Promise<GeocodingResult
       state: String(item.admin1 || item.country || "India"),
       country: String(item.country || "India"),
       lat: typeof item.latitude === "number" ? item.latitude : 28.6139,
-      lon: typeof item.longitude === "number" ? item.longitude : 77.2090,
+      lon: typeof item.longitude === "number" ? item.longitude : 77.209,
     }));
   } catch {
     return [];
@@ -54,8 +56,14 @@ export async function fetchLiveAirQuality(
     const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m&timezone=auto`;
 
     const [aqiRes, weatherRes] = await Promise.all([
-      fetch(aqiUrl, { next: { revalidate: 900 }, headers: { Accept: "application/json" } }),
-      fetch(weatherUrl, { next: { revalidate: 900 }, headers: { Accept: "application/json" } }),
+      fetch(aqiUrl, {
+        next: { revalidate: 900 },
+        headers: { Accept: "application/json" },
+      }),
+      fetch(weatherUrl, {
+        next: { revalidate: 900 },
+        headers: { Accept: "application/json" },
+      }),
     ]);
 
     if (!aqiRes.ok) {
@@ -78,10 +86,22 @@ export async function fetchLiveAirQuality(
 
     // Weather and dispersion extraction
     const currentW = (weatherData.current as Record<string, unknown>) || {};
-    const temp = typeof currentW.temperature_2m === "number" ? Math.round(currentW.temperature_2m) : 21;
-    const humidity = typeof currentW.relative_humidity_2m === "number" ? Math.round(currentW.relative_humidity_2m) : 68;
-    const windSpeed = typeof currentW.wind_speed_10m === "number" ? Math.round(currentW.wind_speed_10m) : 3;
-    const windDirection = typeof currentW.wind_direction_10m === "number" ? Math.round(currentW.wind_direction_10m) : 290;
+    const temp =
+      typeof currentW.temperature_2m === "number"
+        ? Math.round(currentW.temperature_2m)
+        : 21;
+    const humidity =
+      typeof currentW.relative_humidity_2m === "number"
+        ? Math.round(currentW.relative_humidity_2m)
+        : 68;
+    const windSpeed =
+      typeof currentW.wind_speed_10m === "number"
+        ? Math.round(currentW.wind_speed_10m)
+        : 3;
+    const windDirection =
+      typeof currentW.wind_direction_10m === "number"
+        ? Math.round(currentW.wind_direction_10m)
+        : 290;
 
     const isWindStagnant = windSpeed < 6;
     let dispersionIndex: MeteorologicalMetrics["dispersionIndex"] = "Moderate";
@@ -182,7 +202,9 @@ export function getFallbackAirQuality(): {
 
   const hourly: HourlyForecastItem[] = Array.from({ length: 24 }, (_, i) => {
     const isPeak = isSmogInversionHour(i);
-    const baseAqi = isPeak ? 260 - (i >= 6 ? (i - 6) * 15 : 0) : 120 + Math.abs(i - 14) * 8;
+    const baseAqi = isPeak
+      ? 260 - (i >= 6 ? (i - 6) * 15 : 0)
+      : 120 + Math.abs(i - 14) * 8;
     const aqi = Math.max(50, Math.min(390, Math.round(baseAqi)));
     const pm25 = Math.round(aqi * 0.65);
     const pm10 = Math.round(aqi * 1.05);

@@ -79,7 +79,8 @@ export const CleanAirRoutePlanner: React.FC = () => {
         </h2>
       </div>
       <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">
-        Compare urban transit modes to minimize toxic black carbon and ultra fine PM2.5 inhalation during daily work or school transit.
+        Compare urban transit modes to minimize toxic black carbon and ultra
+        fine PM2.5 inhalation during daily work or school transit.
       </p>
 
       <div
@@ -111,7 +112,9 @@ export const CleanAirRoutePlanner: React.FC = () => {
               >
                 {mode.icon}
               </div>
-              <span className="text-xs font-semibold leading-tight">{mode.name}</span>
+              <span className="text-xs font-semibold leading-tight">
+                {mode.name}
+              </span>
             </button>
           );
         })}
@@ -130,16 +133,18 @@ export const CleanAirRoutePlanner: React.FC = () => {
 
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <span className="text-[11px] text-slate-500 block">Exposure Burden</span>
+              <span className="text-[11px] text-slate-500 block">
+                Exposure Burden
+              </span>
               <span
                 className={`text-sm font-bold ${
                   currentMode.riskLabel === "Minimal"
                     ? "text-emerald-600"
                     : currentMode.riskLabel === "Low"
-                    ? "text-teal-600"
-                    : currentMode.riskLabel === "Moderate"
-                    ? "text-amber-600"
-                    : "text-red-600"
+                      ? "text-teal-600"
+                      : currentMode.riskLabel === "Moderate"
+                        ? "text-amber-600"
+                        : "text-red-600"
                 }`}
               >
                 {currentMode.riskLabel} Risk
@@ -163,8 +168,8 @@ export const CleanAirRoutePlanner: React.FC = () => {
                 currentMode.exposureReductionPercent >= 70
                   ? "bg-emerald-500"
                   : currentMode.exposureReductionPercent >= 40
-                  ? "bg-teal-500"
-                  : "bg-red-500"
+                    ? "bg-teal-500"
+                    : "bg-red-500"
               }`}
               style={{ width: `${currentMode.exposureReductionPercent}%` }}
             />

@@ -1,5 +1,12 @@
 import React from "react";
-import { Baby, HeartPulse, Bike, Activity, Users, ShieldAlert } from "lucide-react";
+import {
+  Baby,
+  HeartPulse,
+  Bike,
+  Activity,
+  Users,
+  ShieldAlert,
+} from "lucide-react";
 import { PersonaType, PersonaProfile } from "@/types/persona";
 import { PERSONA_PROFILES } from "@/lib/constants";
 
@@ -36,7 +43,8 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
             Vulnerable Persona Profile Selection
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Select your health vulnerability profile to receive personalized outdoor safety windows and hourly schedules.
+            Select your health vulnerability profile to receive personalized
+            outdoor safety windows and hourly schedules.
           </p>
         </div>
         <span className="text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
@@ -80,8 +88,8 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
                       profile.riskLevel === "Critical"
                         ? "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300"
                         : profile.riskLevel === "High"
-                        ? "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300"
-                        : "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300"
+                          ? "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300"
+                          : "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300"
                     }`}
                   >
                     {profile.riskLevel}
@@ -96,7 +104,10 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
               </div>
 
               <div className="mt-3 pt-2 border-t border-slate-200 dark:border-slate-700/60 text-[11px] text-slate-600 dark:text-slate-300">
-                Safe PM2.5: <span className="font-semibold text-teal-700 dark:text-teal-400">&lt; {profile.targetThresholdPm25} ug/m3</span>
+                Safe PM2.5:{" "}
+                <span className="font-semibold text-teal-700 dark:text-teal-400">
+                  &lt; {profile.targetThresholdPm25} ug/m3
+                </span>
               </div>
             </button>
           );

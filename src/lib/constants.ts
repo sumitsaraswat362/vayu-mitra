@@ -2,21 +2,22 @@ import { CityPreset, AqiCategory, CpcbCategory } from "@/types/air-quality";
 import { PersonaProfile } from "@/types/persona";
 
 export const APP_NAME = "Vayu-Mitra";
-export const APP_TAGLINE = "Urban Winter Smog and Air Quality Resilience Assistant";
+export const APP_TAGLINE =
+  "Urban Winter Smog and Air Quality Resilience Assistant";
 
 export const CITY_PRESETS: CityPreset[] = [
   {
     name: "New Delhi",
     state: "Delhi NCR",
     lat: 28.6139,
-    lon: 77.2090,
+    lon: 77.209,
     isHighSmogZone: true,
   },
   {
     name: "Noida",
     state: "Uttar Pradesh",
     lat: 28.5355,
-    lon: 77.3910,
+    lon: 77.391,
     isHighSmogZone: true,
   },
   {
@@ -43,7 +44,7 @@ export const CITY_PRESETS: CityPreset[] = [
   {
     name: "Mumbai",
     state: "Maharashtra",
-    lat: 19.0760,
+    lat: 19.076,
     lon: 72.8777,
     isHighSmogZone: false,
   },
@@ -77,16 +78,29 @@ export const CPCB_NAAQS_GUIDELINES = {
 
 export function calculateCpcbSubIndex(
   conc: number,
-  breakpoints: Array<{ cLow: number; cHigh: number; iLow: number; iHigh: number }>
+  breakpoints: Array<{
+    cLow: number;
+    cHigh: number;
+    iLow: number;
+    iHigh: number;
+  }>
 ): number {
   for (const b of breakpoints) {
     if (conc >= b.cLow && conc <= b.cHigh) {
-      return Math.round(((b.iHigh - b.iLow) / (b.cHigh - b.cLow)) * (conc - b.cLow) + b.iLow);
+      return Math.round(
+        ((b.iHigh - b.iLow) / (b.cHigh - b.cLow)) * (conc - b.cLow) + b.iLow
+      );
     }
   }
   const last = breakpoints[breakpoints.length - 1];
   if (conc > last.cHigh) {
-    return Math.min(500, Math.round(((500 - last.iHigh) / (500 - last.cHigh)) * (conc - last.cHigh) + last.iHigh));
+    return Math.min(
+      500,
+      Math.round(
+        ((500 - last.iHigh) / (500 - last.cHigh)) * (conc - last.cHigh) +
+          last.iHigh
+      )
+    );
   }
   return 0;
 }
@@ -147,7 +161,8 @@ export const AQI_LEVELS: Record<
     textColor: "text-emerald-700 dark:text-emerald-300",
     borderColor: "border-emerald-300 dark:border-emerald-800",
     bgColor: "bg-emerald-50 dark:bg-emerald-950/40",
-    summary: "Air quality is satisfactory and air pollution poses little or no risk.",
+    summary:
+      "Air quality is satisfactory and air pollution poses little or no risk.",
   },
   Moderate: {
     min: 51,
@@ -156,7 +171,8 @@ export const AQI_LEVELS: Record<
     textColor: "text-yellow-700 dark:text-yellow-300",
     borderColor: "border-yellow-300 dark:border-yellow-800",
     bgColor: "bg-yellow-50 dark:bg-yellow-950/40",
-    summary: "Acceptable quality, but sensitive individuals may experience minor breathing irritation.",
+    summary:
+      "Acceptable quality, but sensitive individuals may experience minor breathing irritation.",
   },
   Poor: {
     min: 101,
@@ -165,7 +181,8 @@ export const AQI_LEVELS: Record<
     textColor: "text-orange-700 dark:text-orange-300",
     borderColor: "border-orange-300 dark:border-orange-800",
     bgColor: "bg-orange-50 dark:bg-orange-950/40",
-    summary: "Unhealthy for sensitive groups. Prolonged exposure causes breathing discomfort.",
+    summary:
+      "Unhealthy for sensitive groups. Prolonged exposure causes breathing discomfort.",
   },
   "Very Poor": {
     min: 201,
@@ -174,7 +191,8 @@ export const AQI_LEVELS: Record<
     textColor: "text-red-700 dark:text-red-300",
     borderColor: "border-red-300 dark:border-red-800",
     bgColor: "bg-red-50 dark:bg-red-950/40",
-    summary: "Severe respiratory discomfort on prolonged exposure. Significant winter smog danger.",
+    summary:
+      "Severe respiratory discomfort on prolonged exposure. Significant winter smog danger.",
   },
   Severe: {
     min: 301,
@@ -183,7 +201,8 @@ export const AQI_LEVELS: Record<
     textColor: "text-purple-700 dark:text-purple-300",
     borderColor: "border-purple-300 dark:border-purple-800",
     bgColor: "bg-purple-50 dark:bg-purple-950/40",
-    summary: "Emergency category. Healthy people experience lung inflammation; vulnerable groups in critical danger.",
+    summary:
+      "Emergency category. Healthy people experience lung inflammation; vulnerable groups in critical danger.",
   },
 };
 

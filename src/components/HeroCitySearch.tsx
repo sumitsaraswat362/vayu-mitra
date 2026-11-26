@@ -33,7 +33,9 @@ export const HeroCitySearch: React.FC<HeroCitySearchProps> = ({
     const timer = setTimeout(async () => {
       setIsSearching(true);
       try {
-        const res = await fetch(`/api/geocode?q=${encodeURIComponent(searchQuery.trim())}`);
+        const res = await fetch(
+          `/api/geocode?q=${encodeURIComponent(searchQuery.trim())}`
+        );
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data)) {
@@ -54,7 +56,10 @@ export const HeroCitySearch: React.FC<HeroCitySearchProps> = ({
   // Click outside to dismiss dropdown
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false);
       }
     }
@@ -86,14 +91,19 @@ export const HeroCitySearch: React.FC<HeroCitySearchProps> = ({
             Personalized Daily Routines for Peak Smog Resilience
           </h1>
           <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-            Real time atmospheric telemetry, thermal radiation inversion detection, and clinically calibrated protection for sensitive respiratory groups.
+            Real time atmospheric telemetry, thermal radiation inversion
+            detection, and clinically calibrated protection for sensitive
+            respiratory groups.
           </p>
         </div>
 
         {/* Live Search and Geolocation Input Bar */}
         <div className="max-w-xl mx-auto relative mb-6" ref={dropdownRef}>
           <div className="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-1.5 shadow-sm focus-within:ring-2 focus-within:ring-teal-600">
-            <Search className="w-5 h-5 text-slate-400 ml-2 shrink-0" aria-hidden="true" />
+            <Search
+              className="w-5 h-5 text-slate-400 ml-2 shrink-0"
+              aria-hidden="true"
+            />
             <input
               type="text"
               role="combobox"
@@ -107,7 +117,10 @@ export const HeroCitySearch: React.FC<HeroCitySearchProps> = ({
               aria-controls="city-search-results"
             />
             {isSearching && (
-              <Loader2 className="w-4 h-4 text-teal-600 animate-spin mr-2 shrink-0" aria-hidden="true" />
+              <Loader2
+                className="w-4 h-4 text-teal-600 animate-spin mr-2 shrink-0"
+                aria-hidden="true"
+              />
             )}
             <button
               type="button"
@@ -140,10 +153,17 @@ export const HeroCitySearch: React.FC<HeroCitySearchProps> = ({
                   className="w-full px-4 py-2.5 text-left text-xs flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800 transition"
                 >
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-3.5 h-3.5 text-teal-600 shrink-0" aria-hidden="true" />
+                    <MapPin
+                      className="w-3.5 h-3.5 text-teal-600 shrink-0"
+                      aria-hidden="true"
+                    />
                     <div>
-                      <span className="font-bold text-slate-900 dark:text-white">{result.name}</span>
-                      <span className="text-slate-500 ml-1.5">{result.state}, {result.country}</span>
+                      <span className="font-bold text-slate-900 dark:text-white">
+                        {result.name}
+                      </span>
+                      <span className="text-slate-500 ml-1.5">
+                        {result.state}, {result.country}
+                      </span>
                     </div>
                   </div>
                   <span className="text-[10px] text-slate-400 font-mono">
@@ -160,7 +180,10 @@ export const HeroCitySearch: React.FC<HeroCitySearchProps> = ({
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider text-center mb-2">
             Priority Smog Corridor Stations:
           </div>
-          <nav aria-label="Priority smog stations" className="flex flex-wrap items-center justify-center gap-2">
+          <nav
+            aria-label="Priority smog stations"
+            className="flex flex-wrap items-center justify-center gap-2"
+          >
             {CITY_PRESETS.map((city) => {
               const isSelected = selectedCity.name === city.name;
               return (
@@ -175,7 +198,10 @@ export const HeroCitySearch: React.FC<HeroCitySearchProps> = ({
                   }`}
                   aria-pressed={isSelected}
                 >
-                  <MapPin className="w-3.5 h-3.5 text-teal-500" aria-hidden="true" />
+                  <MapPin
+                    className="w-3.5 h-3.5 text-teal-500"
+                    aria-hidden="true"
+                  />
                   <span>{city.name}</span>
                   {city.isHighSmogZone && (
                     <span

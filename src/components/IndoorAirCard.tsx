@@ -1,5 +1,12 @@
 import React from "react";
-import { Home, Wind, ShieldAlert, Sparkles, CheckSquare, AlertCircle } from "lucide-react";
+import {
+  Home,
+  Wind,
+  ShieldAlert,
+  Sparkles,
+  CheckSquare,
+  AlertCircle,
+} from "lucide-react";
 
 export const IndoorAirCard: React.FC = () => {
   return (
@@ -11,7 +18,9 @@ export const IndoorAirCard: React.FC = () => {
         </h2>
       </div>
       <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">
-        Indoor air often becomes 3 to 5 times more toxic than outdoor air during winter if unvented combustion and stale CO2 accumulate inside sealed homes.
+        Indoor air often becomes 3 to 5 times more toxic than outdoor air during
+        winter if unvented combustion and stale CO2 accumulate inside sealed
+        homes.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -24,7 +33,9 @@ export const IndoorAirCard: React.FC = () => {
             Ventilate Only Between 1 PM and 3 PM
           </h3>
           <p className="mt-1 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-            Open opposite windows for exactly 15 minutes at 1:30 PM to flush accumulated CO2 and volatile compounds without letting heavy morning or night smog settle indoors.
+            Open opposite windows for exactly 15 minutes at 1:30 PM to flush
+            accumulated CO2 and volatile compounds without letting heavy morning
+            or night smog settle indoors.
           </p>
         </div>
 
@@ -37,7 +48,9 @@ export const IndoorAirCard: React.FC = () => {
             Elevate 2 Feet Off the Floor
           </h3>
           <p className="mt-1 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-            Place purifiers centrally, away from walls and curtains. Run in bedrooms on high speed 45 minutes before sleep, then switch to quiet night mode to eliminate particulate spikes.
+            Place purifiers centrally, away from walls and curtains. Run in
+            bedrooms on high speed 45 minutes before sleep, then switch to quiet
+            night mode to eliminate particulate spikes.
           </p>
         </div>
 
@@ -50,7 +63,9 @@ export const IndoorAirCard: React.FC = () => {
             Eliminate Incense and Unvented Heaters
           </h3>
           <p className="mt-1 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-            Burning a single agarbatti produces PM2.5 levels exceeding 400 ug/m3 in closed rooms. Use electric room oil heaters rather than gas or open coil elements.
+            Burning a single agarbatti produces PM2.5 levels exceeding 400 ug/m3
+            in closed rooms. Use electric room oil heaters rather than gas or
+            open coil elements.
           </p>
         </div>
       </div>
@@ -67,7 +82,9 @@ export const IndoorAirCard: React.FC = () => {
               1
             </span>
             <span>
-              <strong>Wet Mopping Only:</strong> Never dry sweep with traditional brooms, which resuspends fine settled soot back into the respiratory breathing zone.
+              <strong>Wet Mopping Only:</strong> Never dry sweep with
+              traditional brooms, which resuspends fine settled soot back into
+              the respiratory breathing zone.
             </span>
           </div>
 
@@ -76,7 +93,9 @@ export const IndoorAirCard: React.FC = () => {
               2
             </span>
             <span>
-              <strong>Seal Exterior Door Gaps:</strong> Affix silicone sweep draft guards under main entry doors to stop nocturnal cold smog infiltration.
+              <strong>Seal Exterior Door Gaps:</strong> Affix silicone sweep
+              draft guards under main entry doors to stop nocturnal cold smog
+              infiltration.
             </span>
           </div>
 
@@ -85,7 +104,9 @@ export const IndoorAirCard: React.FC = () => {
               3
             </span>
             <span>
-              <strong>Continuous Kitchen Exhaust:</strong> Run chimney hood exhaust fans for 5 full minutes after frying food to capture toxic aerosolized cooking oils.
+              <strong>Continuous Kitchen Exhaust:</strong> Run chimney hood
+              exhaust fans for 5 full minutes after frying food to capture toxic
+              aerosolized cooking oils.
             </span>
           </div>
 
@@ -94,7 +115,9 @@ export const IndoorAirCard: React.FC = () => {
               4
             </span>
             <span>
-              <strong>Air Purifying Foliage:</strong> Maintain indoor oxygenators (Sansevieria Snake Plant and Areca Palm) in bedrooms to counter nighttime stale air buildup.
+              <strong>Air Purifying Foliage:</strong> Maintain indoor
+              oxygenators (Sansevieria Snake Plant and Areca Palm) in bedrooms
+              to counter nighttime stale air buildup.
             </span>
           </div>
         </div>

@@ -9,7 +9,10 @@ export async function GET(request: NextRequest) {
 
     if (!rateCheck.allowed) {
       return NextResponse.json(
-        { error: "Too many requests. Please throttle your rate.", code: "RATE_LIMITED" },
+        {
+          error: "Too many requests. Please throttle your rate.",
+          code: "RATE_LIMITED",
+        },
         {
           status: 429,
           headers: {
@@ -28,7 +31,7 @@ export async function GET(request: NextRequest) {
 
     // Default to New Delhi (28.6139, 77.2090) if parameters are omitted
     const lat = latStr !== null ? parseFloat(latStr) : 28.6139;
-    const lon = lonStr !== null ? parseFloat(lonStr) : 77.2090;
+    const lon = lonStr !== null ? parseFloat(lonStr) : 77.209;
 
     // Strict numerical and geographic boundary verification
     if (
@@ -43,7 +46,8 @@ export async function GET(request: NextRequest) {
     ) {
       return NextResponse.json(
         {
-          error: "Invalid coordinates. Latitude must be between -90 and 90, longitude between -180 and 180.",
+          error:
+            "Invalid coordinates. Latitude must be between -90 and 90, longitude between -180 and 180.",
           code: "INVALID_COORDINATES",
         },
         { status: 400 }
@@ -61,7 +65,8 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Internal Server Error";
+    const message =
+      err instanceof Error ? err.message : "Internal Server Error";
     return NextResponse.json(
       { error: "Atmospheric data telemetry unavailable.", details: message },
       { status: 500 }

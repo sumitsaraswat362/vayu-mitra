@@ -7,7 +7,9 @@ interface HourlyRoutineTimelineProps {
   hourly: HourlyForecastItem[];
 }
 
-export const HourlyRoutineTimeline: React.FC<HourlyRoutineTimelineProps> = ({ hourly }) => {
+export const HourlyRoutineTimeline: React.FC<HourlyRoutineTimelineProps> = ({
+  hourly,
+}) => {
   return (
     <section className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
@@ -17,18 +19,23 @@ export const HourlyRoutineTimeline: React.FC<HourlyRoutineTimelineProps> = ({ ho
             24 Hour Atmospheric Smog and Inversion Timeline
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Hour-by-hour forecast showing diurnal boundary layer trapping versus afternoon dispersion windows.
+            Hour-by-hour forecast showing diurnal boundary layer trapping versus
+            afternoon dispersion windows.
           </p>
         </div>
 
         <div className="flex items-center gap-3 text-xs">
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded bg-red-500 inline-block" />
-            <span className="text-slate-600 dark:text-slate-400">Inversion Trap (Avoid)</span>
+            <span className="text-slate-600 dark:text-slate-400">
+              Inversion Trap (Avoid)
+            </span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded bg-emerald-500 inline-block" />
-            <span className="text-slate-600 dark:text-slate-400">Solar Dispersion (Safe)</span>
+            <span className="text-slate-600 dark:text-slate-400">
+              Solar Dispersion (Safe)
+            </span>
           </div>
         </div>
       </div>
@@ -50,7 +57,11 @@ export const HourlyRoutineTimeline: React.FC<HourlyRoutineTimelineProps> = ({ ho
               <th scope="row">{item.timeLabel}</th>
               <td>{item.aqi}</td>
               <td>{item.pm25}</td>
-              <td>{item.isSafeForOutdoor ? "Safe outdoor window" : "Inversion peak trap"}</td>
+              <td>
+                {item.isSafeForOutdoor
+                  ? "Safe outdoor window"
+                  : "Inversion peak trap"}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -74,9 +85,15 @@ export const HourlyRoutineTimeline: React.FC<HourlyRoutineTimelineProps> = ({ ho
               >
                 <div className="flex items-center justify-center text-slate-500 mb-1">
                   {isNight ? (
-                    <Moon className="w-3 h-3 text-indigo-400" aria-hidden="true" />
+                    <Moon
+                      className="w-3 h-3 text-indigo-400"
+                      aria-hidden="true"
+                    />
                   ) : (
-                    <Sun className="w-3 h-3 text-amber-500" aria-hidden="true" />
+                    <Sun
+                      className="w-3 h-3 text-amber-500"
+                      aria-hidden="true"
+                    />
                   )}
                 </div>
 
@@ -113,9 +130,16 @@ export const HourlyRoutineTimeline: React.FC<HourlyRoutineTimelineProps> = ({ ho
       </div>
 
       <div className="mt-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 flex items-start gap-3">
-        <Info className="w-4 h-4 text-teal-600 mt-0.5 shrink-0" aria-hidden="true" />
+        <Info
+          className="w-4 h-4 text-teal-600 mt-0.5 shrink-0"
+          aria-hidden="true"
+        />
         <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-          <strong>Atmospheric Science Note:</strong> Winter ground cooling creates radiation temperature inversions between 9 PM and 9 AM. Cold air sinks and caps pollutants near ground level, creating lethal smog pockets. The safest outdoor clearance occurs between 1 PM and 4 PM when solar warming breaks the inversion cap.
+          <strong>Atmospheric Science Note:</strong> Winter ground cooling
+          creates radiation temperature inversions between 9 PM and 9 AM. Cold
+          air sinks and caps pollutants near ground level, creating lethal smog
+          pockets. The safest outdoor clearance occurs between 1 PM and 4 PM
+          when solar warming breaks the inversion cap.
         </p>
       </div>
     </section>

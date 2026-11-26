@@ -26,14 +26,14 @@ export const Header: React.FC<HeaderProps> = ({ currentAqi, cityName }) => {
           role="alert"
           aria-live="polite"
           className={`w-full py-2 px-4 text-xs md:text-sm font-semibold text-center flex items-center justify-center gap-2 ${
-            isSevere
-              ? "bg-purple-800 text-white"
-              : "bg-red-700 text-white"
+            isSevere ? "bg-purple-800 text-white" : "bg-red-700 text-white"
           }`}
         >
           <AlertTriangle className="w-4 h-4 shrink-0" aria-hidden="true" />
           <span>
-            <strong>Winter Smog Advisory for {cityName}:</strong> AQI is {currentAqi}. Diurnal thermal radiation inversion trapping active. Limit outdoor exposure.
+            <strong>Winter Smog Advisory for {cityName}:</strong> AQI is{" "}
+            {currentAqi}. Diurnal thermal radiation inversion trapping active.
+            Limit outdoor exposure.
           </span>
         </div>
       )}
@@ -64,8 +64,12 @@ export const Header: React.FC<HeaderProps> = ({ currentAqi, cityName }) => {
             <span>WHO &amp; CPCB Calibrated</span>
           </div>
           <div className="text-right">
-            <span className="text-[11px] text-slate-500 block">Monitored Region</span>
-            <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">{cityName}</span>
+            <span className="text-[11px] text-slate-500 block">
+              Monitored Region
+            </span>
+            <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+              {cityName}
+            </span>
           </div>
         </nav>
       </div>

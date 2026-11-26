@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { categorizeAqi, isSmogInversionHour, getFallbackAirQuality } from "../lib/air-quality-api";
+import {
+  categorizeAqi,
+  isSmogInversionHour,
+  getFallbackAirQuality,
+} from "../lib/air-quality-api";
 import { calculateCpcbAqi } from "../lib/constants";
 
 describe("Air Quality API and Helpers", () => {

@@ -21,7 +21,8 @@ import { RefreshCw, AlertCircle } from "lucide-react";
 
 export default function HomePage() {
   const [selectedCity, setSelectedCity] = useState<CityPreset>(CITY_PRESETS[0]);
-  const [selectedPersona, setSelectedPersona] = useState<PersonaType>("child_asthma");
+  const [selectedPersona, setSelectedPersona] =
+    useState<PersonaType>("child_asthma");
 
   const {
     metrics,
@@ -66,7 +67,9 @@ export default function HomePage() {
       setError("Geolocation is not supported by your browser.");
       return;
     }
-    setAnnouncement("Detecting local geographical coordinates via browser geolocation.");
+    setAnnouncement(
+      "Detecting local geographical coordinates via browser geolocation."
+    );
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const detectedCity: CityPreset = {
@@ -79,21 +82,30 @@ export default function HomePage() {
         setSelectedCity(detectedCity);
       },
       () => {
-        setError("Unable to retrieve location. Please select a city from the list.");
+        setError(
+          "Unable to retrieve location. Please select a city from the list."
+        );
       }
     );
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
-      <Header currentAqi={metrics.cpcbAqi || metrics.aqi} cityName={selectedCity.name} />
+      <Header
+        currentAqi={metrics.cpcbAqi || metrics.aqi}
+        cityName={selectedCity.name}
+      />
 
       {/* Screen Reader Live Region */}
       <div className="sr-only" aria-live="polite" aria-atomic="true">
         {statusAnnouncement}
       </div>
 
-      <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="flex-1 focus:outline-none"
+      >
         <HeroCitySearch
           selectedCity={selectedCity}
           onSelectCity={handleCityChange}
@@ -120,7 +132,8 @@ export default function HomePage() {
                 Atmospheric Dynamics and Telemetry
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                Calibrated against WHO Global Air Quality Guidelines and Indian CPCB NAAQS standards.
+                Calibrated against WHO Global Air Quality Guidelines and Indian
+                CPCB NAAQS standards.
               </p>
             </div>
             <button
@@ -130,7 +143,10 @@ export default function HomePage() {
               className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition shadow-sm min-h-[44px]"
               aria-label="Refresh Air Quality Telemetry"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${isLoadingAqi ? "animate-spin" : ""}`} aria-hidden="true" />
+              <RefreshCw
+                className={`w-3.5 h-3.5 ${isLoadingAqi ? "animate-spin" : ""}`}
+                aria-hidden="true"
+              />
               <span>Refresh Telemetry</span>
             </button>
           </div>
@@ -167,7 +183,9 @@ export default function HomePage() {
       <footer className="mt-16 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-8 px-4 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-700 dark:text-slate-300">Vayu-Mitra</span>
+            <span className="font-bold text-slate-700 dark:text-slate-300">
+              Vayu-Mitra
+            </span>
             <span>&bull;</span>
             <span>Urban Winter Smog and Air Quality Resilience Assistant</span>
           </div>

@@ -9,7 +9,10 @@ export async function GET(request: NextRequest) {
 
     if (!rateCheck.allowed) {
       return NextResponse.json(
-        { error: "Geocoding query limit reached. Please throttle requests.", code: "RATE_LIMITED" },
+        {
+          error: "Geocoding query limit reached. Please throttle requests.",
+          code: "RATE_LIMITED",
+        },
         {
           status: 429,
           headers: {

@@ -35,7 +35,11 @@ export function useRoutinePlan(initialPersona: PersonaType = "child_asthma") {
         const data = await res.json();
         setPlan(data);
       } catch {
-        const deterministic = generateDeterministicPlan(persona, curMetrics, curHourly);
+        const deterministic = generateDeterministicPlan(
+          persona,
+          curMetrics,
+          curHourly
+        );
         setPlan(deterministic);
       } finally {
         setIsLoading(false);

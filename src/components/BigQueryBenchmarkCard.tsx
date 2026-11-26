@@ -1,12 +1,23 @@
 import React from "react";
-import { Database, TrendingUp, Cloud, History, ShieldAlert } from "lucide-react";
-import { getBigQueryAtmosphericBenchmark, getGoogleCloudEnvironment } from "@/lib/google-cloud";
+import {
+  Database,
+  TrendingUp,
+  Cloud,
+  History,
+  ShieldAlert,
+} from "lucide-react";
+import {
+  getBigQueryAtmosphericBenchmark,
+  getGoogleCloudEnvironment,
+} from "@/lib/google-cloud";
 
 interface BigQueryBenchmarkCardProps {
   cityName: string;
 }
 
-export const BigQueryBenchmarkCard: React.FC<BigQueryBenchmarkCardProps> = ({ cityName }) => {
+export const BigQueryBenchmarkCard: React.FC<BigQueryBenchmarkCardProps> = ({
+  cityName,
+}) => {
   const benchmark = getBigQueryAtmosphericBenchmark(cityName);
   const cloudEnv = getGoogleCloudEnvironment();
 
@@ -21,7 +32,8 @@ export const BigQueryBenchmarkCard: React.FC<BigQueryBenchmarkCardProps> = ({ ci
             </h2>
           </div>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-            Calibrated against BigQuery Public Atmospheric Datasets ({cloudEnv.bigQueryDataset}).
+            Calibrated against BigQuery Public Atmospheric Datasets (
+            {cloudEnv.bigQueryDataset}).
           </p>
         </div>
 
@@ -37,7 +49,8 @@ export const BigQueryBenchmarkCard: React.FC<BigQueryBenchmarkCardProps> = ({ ci
             10-Year PM2.5 Baseline
           </span>
           <span className="text-xl font-bold text-slate-900 dark:text-white mt-1 block">
-            {benchmark.decadeAveragePm25} <span className="text-xs font-normal text-slate-500">ug/m3</span>
+            {benchmark.decadeAveragePm25}{" "}
+            <span className="text-xs font-normal text-slate-500">ug/m3</span>
           </span>
           <span className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5 block">
             Indo-Gangetic decadal mean
@@ -77,8 +90,8 @@ export const BigQueryBenchmarkCard: React.FC<BigQueryBenchmarkCardProps> = ({ ci
               benchmark.tenYearTrend === "Deteriorating"
                 ? "text-red-600 dark:text-red-400"
                 : benchmark.tenYearTrend === "Stable"
-                ? "text-amber-600 dark:text-amber-400"
-                : "text-emerald-600 dark:text-emerald-400"
+                  ? "text-amber-600 dark:text-amber-400"
+                  : "text-emerald-600 dark:text-emerald-400"
             }`}
           >
             {benchmark.tenYearTrend}
@@ -90,9 +103,17 @@ export const BigQueryBenchmarkCard: React.FC<BigQueryBenchmarkCardProps> = ({ ci
       </div>
 
       <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 flex items-start gap-3">
-        <History className="w-4 h-4 text-teal-600 mt-0.5 shrink-0" aria-hidden="true" />
+        <History
+          className="w-4 h-4 text-teal-600 mt-0.5 shrink-0"
+          aria-hidden="true"
+        />
         <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-          <strong>BigQuery Longitudinal Insight:</strong> Winter inversion severity in {cityName} has clustered heavily between November 10 and January 31 over the past decade. Nocturnal ground cooling creates stable boundary layers under 100 meters, trapping stubble soot and vehicular particulate matter until solar radiation initiates vertical mixing post-midday.
+          <strong>BigQuery Longitudinal Insight:</strong> Winter inversion
+          severity in {cityName} has clustered heavily between November 10 and
+          January 31 over the past decade. Nocturnal ground cooling creates
+          stable boundary layers under 100 meters, trapping stubble soot and
+          vehicular particulate matter until solar radiation initiates vertical
+          mixing post-midday.
         </p>
       </div>
     </section>
