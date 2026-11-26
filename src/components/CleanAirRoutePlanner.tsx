@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navigation, Bus, Car, Bike, Footprints, ShieldCheck, AlertTriangle } from "lucide-react";
+import { Navigation, Bus, Car, Bike, Footprints } from "lucide-react";
 
 interface TransitMode {
   id: string;
@@ -71,7 +71,7 @@ export const CleanAirRoutePlanner: React.FC = () => {
     transitModes.find((m) => m.id === selectedTransit) ?? transitModes[0];
 
   return (
-    <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+    <section className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
       <div className="flex items-center gap-2 mb-2">
         <Navigation className="w-5 h-5 text-teal-600" aria-hidden="true" />
         <h2 className="text-lg font-bold text-slate-900 dark:text-white">
@@ -82,19 +82,25 @@ export const CleanAirRoutePlanner: React.FC = () => {
         Compare urban transit modes to minimize toxic black carbon and ultra fine PM2.5 inhalation during daily work or school transit.
       </p>
 
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 mb-6">
+      <div
+        role="radiogroup"
+        aria-label="Transit Modes"
+        className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 mb-6"
+      >
         {transitModes.map((mode) => {
           const isSelected = selectedTransit === mode.id;
           return (
             <button
+              type="button"
+              role="radio"
+              aria-checked={isSelected}
               key={mode.id}
               onClick={() => setSelectedTransit(mode.id)}
-              className={`p-3.5 rounded-xl border flex flex-col items-center text-center transition ${
+              className={`p-3.5 rounded-xl border flex flex-col items-center text-center transition focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:outline-none min-h-[44px] ${
                 isSelected
                   ? "bg-teal-50 dark:bg-teal-950/40 border-teal-500 ring-2 ring-teal-500/30 text-teal-900 dark:text-teal-200"
                   : "bg-slate-50/50 dark:bg-slate-800/40 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
               }`}
-              aria-pressed={isSelected}
             >
               <div
                 className={`p-2 rounded-lg mb-2 ${
@@ -169,6 +175,6 @@ export const CleanAirRoutePlanner: React.FC = () => {
           <strong>Transit Health Advisory:</strong> {currentMode.advice}
         </p>
       </div>
-    </div>
+    </section>
   );
 };

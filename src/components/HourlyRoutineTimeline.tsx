@@ -9,7 +9,7 @@ interface HourlyRoutineTimelineProps {
 
 export const HourlyRoutineTimeline: React.FC<HourlyRoutineTimelineProps> = ({ hourly }) => {
   return (
-    <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+    <section className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
         <div>
           <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -33,7 +33,31 @@ export const HourlyRoutineTimeline: React.FC<HourlyRoutineTimelineProps> = ({ ho
         </div>
       </div>
 
-      <div className="overflow-x-auto pb-2 scrollbar-thin">
+      {/* Accessible data table for screen readers */}
+      <table className="sr-only">
+        <caption>24-Hour Atmospheric Smog and Inversion Forecast</caption>
+        <thead>
+          <tr>
+            <th scope="col">Hour</th>
+            <th scope="col">AQI</th>
+            <th scope="col">PM2.5 (ug/m3)</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {hourly.slice(0, 24).map((item) => (
+            <tr key={`sr-${item.hour}`}>
+              <th scope="row">{item.timeLabel}</th>
+              <td>{item.aqi}</td>
+              <td>{item.pm25}</td>
+              <td>{item.isSafeForOutdoor ? "Safe outdoor window" : "Inversion peak trap"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Visual Timeline Grid */}
+      <div className="overflow-x-auto pb-2 scrollbar-thin" aria-hidden="true">
         <div className="min-w-[760px] grid grid-cols-24 gap-1.5 pt-2">
           {hourly.slice(0, 24).map((item) => {
             const level = AQI_LEVELS[item.category] ?? AQI_LEVELS["Moderate"];
@@ -94,6 +118,6 @@ export const HourlyRoutineTimeline: React.FC<HourlyRoutineTimelineProps> = ({ ho
           <strong>Atmospheric Science Note:</strong> Winter ground cooling creates radiation temperature inversions between 9 PM and 9 AM. Cold air sinks and caps pollutants near ground level, creating lethal smog pockets. The safest outdoor clearance occurs between 1 PM and 4 PM when solar warming breaks the inversion cap.
         </p>
       </div>
-    </div>
+    </section>
   );
 };

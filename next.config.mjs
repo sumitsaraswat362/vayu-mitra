@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  output: "standalone",
   async headers() {
     return [
       {
@@ -35,7 +36,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "font-src 'self' data:",
-              "connect-src 'self' https://air-quality-api.open-meteo.com https://generativelanguage.googleapis.com",
+              "connect-src 'self' https://air-quality-api.open-meteo.com https://api.open-meteo.com https://geocoding-api.open-meteo.com https://generativelanguage.googleapis.com",
               "frame-ancestors 'none'",
             ].join("; "),
           },

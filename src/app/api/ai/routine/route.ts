@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateAiRoutinePlan } from "@/lib/gemini-client";
+import { checkRateLimit, sanitizeString } from "@/lib/rate-limiter";
 import { PersonaType } from "@/types/persona";
 import { AirQualityMetrics, HourlyForecastItem } from "@/types/air-quality";
 
@@ -13,6 +14,23 @@ const VALID_PERSONAS: PersonaType[] = [
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = request.headers.get("x-forwarded-for") || "127.0.0.1";
+    const rateCheck = checkRateLimit(ip, 30, 60000);
+
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        { error: "AI synthesis rate limit exceeded. Please wait a moment.", code: "RATE_LIMITED" },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(rateCheck.resetSeconds),
+            "X-RateLimit-Limit": String(rateCheck.limit),
+            "X-RateLimit-Remaining": "0",
+          },
+        }
+      );
+    }
+
     const contentLength = request.headers.get("content-length");
     if (contentLength && parseInt(contentLength, 10) > 32768) {
       return NextResponse.json(
@@ -44,10 +62,10 @@ export async function POST(request: NextRequest) {
       hourly?: unknown;
     };
 
-    const targetPersona: PersonaType =
-      typeof personaId === "string" && VALID_PERSONAS.includes(personaId as PersonaType)
-        ? (personaId as PersonaType)
-        : "general_citizen";
+    const sanitizedPersona = typeof personaId === "string" ? sanitizeString(personaId) : "";
+    const targetPersona: PersonaType = VALID_PERSONAS.includes(sanitizedPersona as PersonaType)
+      ? (sanitizedPersona as PersonaType)
+      : "general_citizen";
 
     if (
       !current ||
@@ -71,6 +89,8 @@ export async function POST(request: NextRequest) {
       headers: {
         "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
         "X-Content-Type-Options": "nosniff",
+        "X-RateLimit-Limit": String(rateCheck.limit),
+        "X-RateLimit-Remaining": String(rateCheck.remaining),
       },
     });
   } catch (err: unknown) {

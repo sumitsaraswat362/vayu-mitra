@@ -28,7 +28,7 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+    <section className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
         <div>
           <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -44,19 +44,25 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
         </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+      <div
+        role="radiogroup"
+        aria-label="Vulnerable Persona Profiles"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3"
+      >
         {PERSONA_PROFILES.map((profile: PersonaProfile) => {
           const isSelected = selectedPersona === profile.id;
           return (
             <button
+              type="button"
+              role="radio"
+              aria-checked={isSelected}
               key={profile.id}
               onClick={() => onSelectPersona(profile.id)}
-              className={`text-left p-4 rounded-xl border transition flex flex-col justify-between ${
+              className={`text-left p-4 rounded-xl border transition flex flex-col justify-between focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:outline-none min-h-[44px] ${
                 isSelected
                   ? "bg-teal-50 dark:bg-teal-950/40 border-teal-500 ring-2 ring-teal-500/30"
                   : "bg-slate-50/50 dark:bg-slate-800/40 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800"
               }`}
-              aria-pressed={isSelected}
             >
               <div>
                 <div className="flex items-center justify-between">
@@ -96,6 +102,6 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
           );
         })}
       </div>
-    </div>
+    </section>
   );
 };

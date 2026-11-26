@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { HeroCitySearch } from "@/components/HeroCitySearch";
 import { AqiOverviewCard } from "@/components/AqiOverviewCard";
+import { BigQueryBenchmarkCard } from "@/components/BigQueryBenchmarkCard";
 import { GrapProtocolCard } from "@/components/GrapProtocolCard";
 import { PollutantTableCard } from "@/components/PollutantTableCard";
 import { PersonaSelector } from "@/components/PersonaSelector";
@@ -136,6 +137,8 @@ export default function HomePage() {
 
           <AqiOverviewCard metrics={metrics} cityName={selectedCity.name} />
 
+          <BigQueryBenchmarkCard cityName={selectedCity.name} />
+
           <GrapProtocolCard aqi={metrics.cpcbAqi || metrics.aqi} />
 
           <PollutantTableCard metrics={metrics} />
@@ -169,9 +172,9 @@ export default function HomePage() {
             <span>Urban Winter Smog and Air Quality Resilience Assistant</span>
           </div>
           <div className="flex items-center gap-4 text-slate-400">
-            <span>Open-Meteo Atmospheric &amp; Satellite Feed</span>
-            <span>WHO 2021 Guidelines</span>
-            <span>CAQM GRAP Compliant</span>
+            <span>Google Cloud Vertex AI &amp; BigQuery</span>
+            <span>Open-Meteo Satellite Feed</span>
+            <span>WHO 2021 &amp; CPCB Compliant</span>
           </div>
         </div>
       </footer>

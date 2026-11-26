@@ -1,8 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetchLiveAirQuality } from "@/lib/air-quality-api";
+import { checkRateLimit } from "@/lib/rate-limiter";
 
 export async function GET(request: NextRequest) {
   try {
+    const ip = request.headers.get("x-forwarded-for") || "127.0.0.1";
+    const rateCheck = checkRateLimit(ip, 60, 60000);
+
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        { error: "Too many requests. Please throttle your rate.", code: "RATE_LIMITED" },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(rateCheck.resetSeconds),
+            "X-RateLimit-Limit": String(rateCheck.limit),
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Reset": String(rateCheck.resetSeconds),
+          },
+        }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const latStr = searchParams.get("lat");
     const lonStr = searchParams.get("lon");
@@ -37,6 +56,8 @@ export async function GET(request: NextRequest) {
       headers: {
         "Cache-Control": "public, s-maxage=900, stale-while-revalidate=1800",
         "X-Content-Type-Options": "nosniff",
+        "X-RateLimit-Limit": String(rateCheck.limit),
+        "X-RateLimit-Remaining": String(rateCheck.remaining),
       },
     });
   } catch (err: unknown) {
