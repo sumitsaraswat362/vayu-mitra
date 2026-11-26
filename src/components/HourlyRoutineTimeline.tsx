@@ -102,7 +102,7 @@ export const HourlyRoutineTimeline: React.FC<HourlyRoutineTimelineProps> = ({
                 </span>
 
                 <div
-                  className={`my-1.5 w-full py-1 rounded text-white text-[11px] font-black ${level.badgeColor}`}
+                  className={`my-1.5 w-full py-1 rounded text-[11px] font-black ${level.badgeColor}`}
                   title={`AQI ${item.aqi} - ${item.category}`}
                 >
                   {item.aqi}

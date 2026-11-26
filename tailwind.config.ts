@@ -26,6 +26,9 @@ const config: Config = {
           severe: "#881337",
         },
       },
+      gridTemplateColumns: {
+        "24": "repeat(24, minmax(0, 1fr))",
+      },
     },
   },
   plugins: [],

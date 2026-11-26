@@ -160,7 +160,7 @@ export const AiRoutinePlanCard: React.FC<AiRoutinePlanCardProps> = ({
 
             return (
               <div
-                key={idx}
+                key={`slot-${slot.timeSlot}-${slot.activity}`}
                 className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
               >
                 <div className="flex items-start sm:items-center gap-3">
@@ -196,7 +196,7 @@ export const AiRoutinePlanCard: React.FC<AiRoutinePlanCardProps> = ({
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600 dark:text-slate-300">
           {plan.indoorProtectionChecklist.map((item, idx) => (
             <li
-              key={idx}
+              key={`action-${idx}-${item.slice(0, 15)}`}
               className="flex items-start gap-2 bg-slate-100/60 dark:bg-slate-800/40 p-2.5 rounded-lg"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-teal-600 mt-1.5 shrink-0" />

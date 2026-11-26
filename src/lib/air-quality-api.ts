@@ -7,6 +7,11 @@ import {
 } from "@/types/air-quality";
 import { calculateCpcbAqi } from "./constants";
 
+/**
+ * Categorizes an AQI value into standard EPA / CPCB qualitative tiers.
+ * @param aqi Numerical Air Quality Index (0 to 500)
+ * @returns Qualitative AQI category tier
+ */
 export function categorizeAqi(aqi: number): AqiCategory {
   if (aqi <= 50) return "Good";
   if (aqi <= 100) return "Moderate";
@@ -15,11 +20,21 @@ export function categorizeAqi(aqi: number): AqiCategory {
   return "Severe";
 }
 
+/**
+ * Determines whether a given 24-hour hour falls within the nocturnal radiation inversion window.
+ * @param hour Integer hour of the day (0 to 23)
+ * @returns True if the hour experiences thermal radiation trapping
+ */
 export function isSmogInversionHour(hour: number): boolean {
   // Winter radiation inversion is strongest between 9 PM (21:00) and 9 AM (09:00)
   return hour >= 21 || hour <= 9;
 }
 
+/**
+ * Searches Indian cities and districts via geocoding API with sanitization.
+ * @param query City or district name string
+ * @returns Array of validated geocoding coordinates
+ */
 export async function searchIndianCities(
   query: string
 ): Promise<GeocodingResult[]> {
@@ -47,6 +62,12 @@ export async function searchIndianCities(
   }
 }
 
+/**
+ * Fetches real-time atmospheric air quality and meteorological telemetry.
+ * @param lat Decimal latitude
+ * @param lon Decimal longitude
+ * @returns Real-time air quality metrics and 24-hour hourly forecast
+ */
 export async function fetchLiveAirQuality(
   lat: number,
   lon: number

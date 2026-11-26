@@ -76,6 +76,12 @@ export const CPCB_NAAQS_GUIDELINES = {
   coDaily: 4,
 };
 
+/**
+ * Computes the Indian CPCB piecewise linear sub-index for a specific pollutant.
+ * @param conc Pollutant concentration in ug/m3
+ * @param breakpoints Concentration and sub-index breakpoint boundaries
+ * @returns Linear interpolated sub-index value
+ */
 export function calculateCpcbSubIndex(
   conc: number,
   breakpoints: Array<{
@@ -105,6 +111,12 @@ export function calculateCpcbSubIndex(
   return 0;
 }
 
+/**
+ * Calculates official Indian National Air Quality Index (CPCB MoEFCC) from PM2.5 and PM10 concentrations.
+ * @param pm25 Fine particulate matter concentration in ug/m3
+ * @param pm10 Coarse particulate matter concentration in ug/m3
+ * @returns Overall CPCB AQI value and qualitative category
+ */
 export function calculateCpcbAqi(
   pm25: number,
   pm10: number
@@ -157,8 +169,8 @@ export const AQI_LEVELS: Record<
   Good: {
     min: 0,
     max: 50,
-    badgeColor: "bg-emerald-600",
-    textColor: "text-emerald-700 dark:text-emerald-300",
+    badgeColor: "bg-emerald-700 text-white",
+    textColor: "text-emerald-800 dark:text-emerald-300",
     borderColor: "border-emerald-300 dark:border-emerald-800",
     bgColor: "bg-emerald-50 dark:bg-emerald-950/40",
     summary:
@@ -167,18 +179,18 @@ export const AQI_LEVELS: Record<
   Moderate: {
     min: 51,
     max: 100,
-    badgeColor: "bg-yellow-600",
-    textColor: "text-yellow-700 dark:text-yellow-300",
-    borderColor: "border-yellow-300 dark:border-yellow-800",
-    bgColor: "bg-yellow-50 dark:bg-yellow-950/40",
+    badgeColor: "bg-amber-400 text-amber-950 font-bold border border-amber-500",
+    textColor: "text-amber-900 dark:text-amber-200",
+    borderColor: "border-amber-300 dark:border-amber-800",
+    bgColor: "bg-amber-50 dark:bg-amber-950/40",
     summary:
       "Acceptable quality, but sensitive individuals may experience minor breathing irritation.",
   },
   Poor: {
     min: 101,
     max: 200,
-    badgeColor: "bg-orange-600",
-    textColor: "text-orange-700 dark:text-orange-300",
+    badgeColor: "bg-orange-700 text-white",
+    textColor: "text-orange-800 dark:text-orange-300",
     borderColor: "border-orange-300 dark:border-orange-800",
     bgColor: "bg-orange-50 dark:bg-orange-950/40",
     summary:
@@ -187,18 +199,18 @@ export const AQI_LEVELS: Record<
   "Very Poor": {
     min: 201,
     max: 300,
-    badgeColor: "bg-red-600",
-    textColor: "text-red-700 dark:text-red-300",
-    borderColor: "border-red-300 dark:border-red-800",
-    bgColor: "bg-red-50 dark:bg-red-950/40",
+    badgeColor: "bg-rose-700 text-white",
+    textColor: "text-rose-800 dark:text-rose-300",
+    borderColor: "border-rose-300 dark:border-rose-800",
+    bgColor: "bg-rose-50 dark:bg-rose-950/40",
     summary:
       "Severe respiratory discomfort on prolonged exposure. Significant winter smog danger.",
   },
   Severe: {
     min: 301,
     max: 500,
-    badgeColor: "bg-purple-700",
-    textColor: "text-purple-700 dark:text-purple-300",
+    badgeColor: "bg-purple-900 text-white",
+    textColor: "text-purple-900 dark:text-purple-200",
     borderColor: "border-purple-300 dark:border-purple-800",
     bgColor: "bg-purple-50 dark:bg-purple-950/40",
     summary:

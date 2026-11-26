@@ -2,6 +2,13 @@ import { AirQualityMetrics, HourlyForecastItem } from "@/types/air-quality";
 import { PersonaType, PersonalizedRoutinePlan } from "@/types/persona";
 import { generateDeterministicPlan } from "./persona-engine";
 
+/**
+ * Synthesizes a personalized winter smog routine plan using Google Gemini models with deterministic fallback.
+ * @param personaId Identifier of target vulnerable demographic
+ * @param current Current atmospheric telemetry metrics
+ * @param hourly 24-hour diurnal forecast
+ * @returns Personalized routine schedule and respiratory guidance
+ */
 export async function generateAiRoutinePlan(
   personaId: PersonaType,
   current: AirQualityMetrics,

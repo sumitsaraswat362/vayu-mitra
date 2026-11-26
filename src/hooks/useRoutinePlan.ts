@@ -4,6 +4,11 @@ import { AirQualityMetrics, HourlyForecastItem } from "@/types/air-quality";
 import { generateDeterministicPlan } from "@/lib/persona-engine";
 import { getFallbackAirQuality } from "@/lib/air-quality-api";
 
+/**
+ * Custom React hook synthesizing personalized winter smog routines across vulnerable personas.
+ * @param initialPersona Demographic identifier (defaults to child with asthma)
+ * @returns Personalized routine schedule state and fetcher function
+ */
 export function useRoutinePlan(initialPersona: PersonaType = "child_asthma") {
   const [plan, setPlan] = useState<PersonalizedRoutinePlan>(
     generateDeterministicPlan(

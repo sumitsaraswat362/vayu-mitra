@@ -2,6 +2,13 @@ import { AirQualityMetrics, HourlyForecastItem } from "@/types/air-quality";
 import { PersonaType, PersonalizedRoutinePlan } from "@/types/persona";
 import { PERSONA_PROFILES } from "./constants";
 
+/**
+ * Generates an instant, zero-latency clinical routine plan tailored to vulnerable user personas and real-time telemetry.
+ * @param personaId Identifier of target vulnerable persona profile
+ * @param current Current atmospheric metrics and pollutant concentrations
+ * @param hourly 24-hour diurnal atmospheric forecast
+ * @returns Deterministic personalized protection plan with safe windows and checklist
+ */
 export function generateDeterministicPlan(
   personaId: PersonaType,
   current: AirQualityMetrics,

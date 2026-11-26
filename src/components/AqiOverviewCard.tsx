@@ -58,7 +58,7 @@ export const AqiOverviewCard: React.FC<AqiOverviewCardProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span
-                  className={`inline-block px-3 py-1 rounded-full text-xs font-bold text-white ${meta.badgeColor}`}
+                  className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${meta.badgeColor}`}
                 >
                   {displayCategory}
                 </span>

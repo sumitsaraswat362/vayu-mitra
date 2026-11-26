@@ -6,6 +6,11 @@ import {
 } from "@/types/air-quality";
 import { getFallbackAirQuality } from "@/lib/air-quality-api";
 
+/**
+ * Custom React hook managing atmospheric air quality telemetry lifecycle, caching, and screen reader announcements.
+ * @param initialCity Initial city preset configuration
+ * @returns State and dispatcher functions for air quality metrics
+ */
 export function useAirQuality(initialCity: CityPreset) {
   const [metrics, setMetrics] = useState<AirQualityMetrics>(
     getFallbackAirQuality().current
